@@ -17,7 +17,7 @@ export default async function tailscaleRoutes(fastify: FastifyInstance) {
       .filter((node: any) => node.online)
       .map((node: any) => ({
         name: node.name,
-        status: `🟢 Online (${node.ip})`,
+        status: `Online (${node.ip})`,
       }));
 
     return { nodes: onlineNodes };
