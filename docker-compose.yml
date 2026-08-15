@@ -1,0 +1,51 @@
+services:
+  aggregator:
+    image: tomita2022/homelab-summary:latest
+    container_name: homelab-summary
+    restart: unless-stopped
+    ports:
+      - 3333:3333
+    // env_file: // - .env # loads all variables from .env
+    environment:
+      - PORT=3333
+      - POLL_INTERVAL_MS=30000
+      - LOG_LEVEL=info
+      - API_KEY=your-super-secret-key
+      # --- Application URLs ---
+
+      - PLEX_URL=http://192.168.0.226:32400/identity
+      - JELLYFIN_URL=https://jellyfin.ksbflix.co.uk/health
+      - SONARR_URL=http://192.168.0.226:30023/api/v3/health
+      - RADARR_URL=http://192.168.0.226:30025/api/v3/health
+      - PROWLARR_URL=http://192.168.0.226:30050/api/v1/health
+      - SABNZBD_URL=http://192.168.0.226:30055
+      - SEERR_URL=http://192.168.0.212:5055/api/v1/status
+
+      # --- Application Tokens ---
+      - PLEX_TOKEN=diW3eEZgs5kwrc9j-mdP
+      - JELLYFIN_TOKEN=b1268255a96f45f2a8fdc2b0f138ff4a
+      - SONARR_API_KEY=f9868e5f81644246988ffc6d3ba47aa8
+      - RADARR_API_KEY=1a73db4647454f54b398ffc7fa7ed256
+      - PROWLARR_API_KEY=a1576799ed25497dbaa560a9d3d908f0
+      - SABNZBD_API_KEY=74ymjqltboqio05v4si5unsd6sfwbj6c
+      - SEERR_API_KEY=MTc4MDc3MzMyMzg5NTc2OTUyMTM2LTg2NmItNGNjYy1hOWMxLTNlZTM3NjEyNDk2ZA==
+      # --- Infrastructure Hosts  ---
+      - TRUENAS_HOST=http://192.168.0.226
+      - TRUENAS_API_KEY=3-cas5esaU2qpl4kkIzkq0SBEE3cKSHBsPuUk2J9WRRryhC4uEzLgfj4aNA62C9t8D
+      - PROXMOX_HOST=https://192.168.0.26:8006
+      - PROXMOX_API_TOKEN=PVEAPIToken=root@pam!monitoring=b9bfa5f0-3d4e-4bfa-8de9-ddeac690e277
+      # --- Network ---
+      - NETWORK_PING_TARGETS=gateway|192.168.0.1,dns|1.1.1.1,internet|8.8.8.8
+      - NETWORK_DNS_TARGETS=google.com,github.com
+      - NETWORK_DNS_SERVER=192.168.0.101,192.168.0.110
+      ### Redact_IPS Redacts IP's or show them
+      - REDACT_IPS=false
+      - NETWORK_DNS_TARGETS=google.com,github.com,localhost
+      - NETWORK_DNS_SERVER=192.168.0.101,192.168.0.110
+      ### Redact_IPS Redacts IP's or show them
+      - TAILSCALE_API_KEY=tskey-api-kGLCXPbh2u11CNTRL-VeGPxL2gcbVCubCi7TtmYVqagmjxCrpUZ
+      - TAILSCALE_TAILNET=-
+networks: {}
+  # Optional: mount Tailscale socket if you use it
+  # volumes:
+  #   - /var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock
