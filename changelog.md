@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Collector health status now displays with colour‑coded emojis instead of relying on Homepage's `color: adaptive` (which doesn't work with `dynamic-list`)
 
+### Added
+
+- Added screenshot of the Homelab Summary output as an example of how I have integrated it with Homepage.
+
 ---
 
 ## [0.1.0] - 2026-08-15
