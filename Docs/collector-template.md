@@ -1,6 +1,6 @@
 # Adding a New Collector
 
-## This guide walks you through adding a new collector to the aggregator, following the Twelve Rules and the Collector Lifecycle.
+This guide walks you through adding a new collector to the aggregator, following the Twelve Rules and the Collector Lifecycle.
 
 ## Step 1 – Define the Collector's Purpose
 
@@ -18,7 +18,7 @@ Clearly state what the collector does, which service it targets, and what data i
 
 List the environment variables the collector needs:
 
-- `PROXMOX_HOST` – the base URL of the Proxmox API (e.g., `https://192.168.0.20:8006`)
+- `PROXMOX_HOST` – the base URL of the Proxmox API (e.g., `https://192.168.xxx.xxx:8006`)
 - `PROXMOX_API_TOKEN` – the API token string
 
 Add these to `.env.example` and `src/config.ts`.
@@ -36,6 +36,8 @@ Create a new file in `src/collectors/` (e.g., `proxmox.ts`). The collector must 
 
 **Example skeleton:**
 
+<details>
+<summary>Click here to expand and view hidden details</summary>
 ```typescript
 // src/collectors/proxmox.ts
 import {
@@ -50,18 +52,18 @@ export const serviceName = "Proxmox";
 export { getProxmoxStatus as fetch };
 
 export async function getProxmoxStatus(
-  config: any,
+config: any,
 ): Promise<CollectorResult<ServiceStatus>> {
-  const start = Date.now();
-  const findings: Finding[] = [];
+const start = Date.now();
+const findings: Finding[] = [];
 
-  try {
-    // 1. Read configuration
-    const url = config.PROXMOX_HOST;
-    const response = await axios.get(url, {
-      headers: { Authorization: config.PROXMOX_API_TOKEN },
-      timeout: 10000,
-    });
+try {
+// 1. Read configuration
+const url = config.PROXMOX_HOST;
+const response = await axios.get(url, {
+headers: { Authorization: config.PROXMOX_API_TOKEN },
+timeout: 10000,
+});
 
     // 2. Normalise data
     const nodes = response.data.data.map((node: any) => ({
@@ -87,15 +89,18 @@ export async function getProxmoxStatus(
       duration: Date.now() - start,
       status: "success",
     };
-  } catch (err: any) {
-    findings.push({
-      category: "connectivity",
-      severity: "critical",
-      message: `Failed to connect: ${err.message}`,
-    });
-    // ... return error status
-  }
+
+} catch (err: any) {
+findings.push({
+category: "connectivity",
+severity: "critical",
+message: `Failed to connect: ${err.message}`,
+});
+// ... return error status
 }
+}
+
+<details>
 ```
 
 ### Rules to follow:
@@ -131,7 +136,7 @@ const serviceRegistry = [
 
 Run the collector independently (without the full server) to verify it works.
 
-## Create a test script (e.g., test-collector.js) that loads environment variables and calls the collector directly.
+Create a test script (e.g., `test-collector.js`) that loads environment variables and calls the collector directly.
 
 ## Step 6 – Document the Collector
 

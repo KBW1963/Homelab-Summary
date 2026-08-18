@@ -151,7 +151,7 @@ The Health Interpreter is a new layer that turns raw findings from collectors in
 - Produces a summary, impact statement, and recommendedAction.
 - Ensures that informational conditions (like available updates) do not degrade the overall health status.
 
-## This makes the aggregator "clever" without being complicated – it follows simple, documented rules.
+This makes the aggregator "clever" without being complicated – it follows simple, documented rules.
 
 ### 2.5 Homelab State (Cache)
 

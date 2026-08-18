@@ -38,6 +38,8 @@ interface Finding {
 }
 ```
 
+**Fields:**
+
 | Field    | Type                          | Description                                                              |
 | -------- | ----------------------------- | ------------------------------------------------------------------------ |
 | category | string                        | The aspect of the service affected (e.g., health, update, connectivity). |
@@ -45,7 +47,7 @@ interface Finding {
 | message  | string                        | Human‑readable description of the finding.                               |
 | source   | string                        | Optional component (e.g., UpdateCheck, Notifications).                   |
 
-Severity Rules
+**Severity Rules**
 
 | Severity | Effect on Overall Health        | Example                                      |
 | -------- | ------------------------------- | -------------------------------------------- |
@@ -86,7 +88,7 @@ interface ServiceStatus {
 }
 ```
 
-Feilds:
+**Feilds:**
 
 | Field      | Type                | Required | Description                                                       |
 | ---------- | ------------------- | -------- | ----------------------------------------------------------------- |
@@ -99,8 +101,10 @@ Feilds:
 | details    | Record<string, any> | No       | Optional additional data (e.g., version, active streams, issues). |
 | error      | string              | No       | Error message if the collector failed or the service is DOWN.     |
 
-Example:
+**Example:**
 
+<details>
+<summary>Click here to expand and view hidden details</summary>
 ```json
 {
   "id": "sonarr",
@@ -131,8 +135,8 @@ Example:
   }
 }
 ```
-
-Note: findings contains the raw observations. The issue field is a convenience field that holds the first finding's message, making it easy to display in clients like Homepage without iterating over the array.
+<details>
+<!-- Note: findings contains the raw observations. The issue field is a convenience field that holds the first finding's message, making it easy to display in clients like Homepage without iterating over the array.-->
 
 ---
 
@@ -162,13 +166,15 @@ interface CollectorError {
 }
 ```
 
+**Fields:**
+
 | Field     | Type    | Description                                                                   |
 | --------- | ------- | ----------------------------------------------------------------------------- |
 | code      | string  | Machine-readable error code (e.g., 'ECONNREFUSED', 'TIMEOUT', 'AUTH_FAILED'). |
 | message   | string  | Human-readable error description.                                             |
 | retryable | boolean | Whether the error is likely temporary and should be retried.                  |
 
-Example:
+**Example:**
 
 ```json
 {
@@ -183,6 +189,8 @@ Example:
 ### 1.5 CollectorHealth
 
 The collectorHealth field in HomelabState is populated by the scheduler and exposed via /collectors. It provides per‑collector health, last run time, duration, error count, and last error message.
+
+**Example:**
 
 ```typescript
 interface CollectorHealth {
@@ -206,8 +214,7 @@ interface CollectorHealth {
 | errors    | number      | Cumulative error count.                                      |
 | lastError | string      | Error message from the last failure, or null if none.        |
 
-Note: The scheduler logs health transitions (e.g., HEALTHY → DEGRADED) to the console when a collector's status changes. This provides real‑time
-operational feedback. The /collectors endpoint always returns the latest health snapshot, not historical transitions.
+<!-- Note: The scheduler logs health transitions (e.g., HEALTHY → DEGRADED) to the console when a collector's status changes. This provides real‑time operational feedback. The /collectors endpoint always returns the latest health snapshot, not historical transitions.-->
 
 ---
 
@@ -216,6 +223,7 @@ operational feedback. The /collectors endpoint always returns the latest health 
 ## 2.1 Plex
 
 Endpoint: /status/plex
+
 Format: ServiceStatus
 
 ```json
@@ -237,6 +245,7 @@ Format: ServiceStatus
 ## 2.2 Jellyfin
 
 Endpoint: /status/jellyfin
+
 Format: ServiceStatus
 
 ```json
@@ -251,6 +260,7 @@ Format: ServiceStatus
 ## 2.3 Sonarr
 
 Endpoint: /status/sonarr
+
 Format: ServiceStatus
 
 ```json
@@ -273,6 +283,7 @@ Format: ServiceStatus
 ## 2.4 Radarr
 
 Endpoint: /status/radarr
+
 Format: ServiceStatus
 
 ```json
@@ -294,6 +305,7 @@ Format: ServiceStatus
 ## 2.5 Prowlarr
 
 Endpoint: /status/prowlarr
+
 Format: ServiceStatus
 
 ```json
@@ -315,6 +327,7 @@ Format: ServiceStatus
 ## 2.6 Seerr
 
 Endpoint: /status/seerr
+
 Format: ServiceStatus
 
 ```json
@@ -339,6 +352,7 @@ Format: ServiceStatus
 ## 2.7 SABnzbd
 
 Endpoint: /status/sabnzbd
+
 Format: ServiceStatus
 
 ```json
@@ -363,13 +377,15 @@ Format: ServiceStatus
 ## 2.8 Services (Aggregated)
 
 Endpoint: /status
+
 Format: ServiceStatus[]
 
-## An array of all service statuses.
+An array of all service statuses.
 
 ## 2.9 TrueNAS
 
 Endpoint: /truenas
+
 Format: { pools: TrueNASPool[] }
 
 ```typescript
@@ -383,7 +399,7 @@ interface TrueNASPool {
 }
 ```
 
-Example:
+**Example:**
 
 ```json
 {
@@ -405,6 +421,7 @@ Example:
 ## 2.10 Proxmox
 
 Endpoint: /proxmox
+
 Format: { nodes: ProxmoxNode[] }
 
 ```typescript
@@ -419,7 +436,7 @@ interface ProxmoxNode {
 }
 ```
 
-Example:
+**Example:**
 
 ```json
 {
@@ -441,7 +458,10 @@ Example:
 ## 2.11 Network
 
 Endpoint: /network
+
 Format: NetworkMetrics (as defined in collectors/network.ts)
+
+**Example:**
 
 ```typescript
 interface NetworkMetrics {
@@ -475,6 +495,7 @@ interface NetworkMetrics {
 ### 2.12 Tailscale
 
 Endpoint: /tailscale
+
 Format: { connected: boolean; online: number; total: number; nodes: TailscaleNode[] }
 
 ```typescript
@@ -482,7 +503,7 @@ interface TailscaleNode {
   name: string;
   status: string; // "🟢 Online" or "🔴 Offline"
 }
-Example:
+**Example:**
 
 json
 {
@@ -510,7 +531,7 @@ interface HomelabState {
 }
 ```
 
-## This is the single source of truth for the aggregator. All API endpoints read from this cache.
+This is the single source of truth for the aggregator. All API endpoints read from this cache.
 
 ## 4. API Response Standards
 

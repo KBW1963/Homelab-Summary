@@ -6,7 +6,7 @@ This document describes the test scenarios available via the `/test-health` endp
 
 ## Endpoint
 
-**GET /test-health?scenario=<scenario-name>**
+**`GET /test-health?scenario=<scenario-name>`**
 
 **Authentication:** Requires the `X-API-Key` header.
 
@@ -35,6 +35,8 @@ This document describes the test scenarios available via the `/test-health` endp
 }
 ```
 
+**Test Command:**
+
 ```bash
 curl -H "X-API-Key: your-key" "http://localhost:3333/test-health?scenario=updates-only" | jq
 ```
@@ -61,7 +63,7 @@ Expected Output:
 }
 ```
 
-Test Command:
+**Test Command:**
 
 ```bash
 curl -H "X-API-Key: your-key" "http://localhost:3333/test-health?scenario=warning" | jq
@@ -146,15 +148,13 @@ Interpreted Health Output:
 }
 ```
 
-> `Note:` The /homepage endpoint combines service health and infrastructure health. In this scenario, the combined overall status becomes WARNING because of the infrastructure warning.
-
 **Test Command:**
 
 ```bash
 curl -H "X-API-Key: your-key" "http://localhost:3333/test-health?scenario=mixed" | jq
 ```
 
----
+## <!-- `Note:` The /homepage endpoint combines service health and infrastructure health. In this scenario, the combined overall status becomes WARNING because of the infrastructure warning.-->
 
 ## How to extend tests
 

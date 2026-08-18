@@ -47,29 +47,29 @@ All configuration is provided via environment variables. You can either:
 
 ### Required Environment Variables
 
-| Variable            | Description                                                                                                       |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `API_KEY`           | Your secret API key (used for `X-API-Key` header).                                                                |
-| `PLEX_URL`          | Full URL to Plex identity endpoint.                                                                               |
-| `JELLYFIN_URL`      | Full URL to Jellyfin health endpoint.                                                                             |
-| `SONARR_URL`        | Full URL to Sonarr health endpoint.                                                                               |
-| `RADARR_URL`        | Full URL to Radarr health endpoint.                                                                               |
-| `PROWLARR_URL`      | Full URL to Prowlarr health endpoint.                                                                             |
-| `SEERR_URL`         | Full URL to Seerr health endpoint.                                                                                |
-| `SABNZBD_URL`       | Full URL to Base URL to SABnzbd (e.g., `http://192.168.0.226:30055`). Do **not** include `/api` or query strings. |
-| `PLEX_TOKEN`        | Plex API token.                                                                                                   |
-| `JELLYFIN_TOKEN`    | Jellyfin API token.                                                                                               |
-| `SONARR_API_KEY`    | Sonarr API key.                                                                                                   |
-| `RADARR_API_KEY`    | Radarr API key.                                                                                                   |
-| `PROWLARR_API_KEY`  | Prowlarr API key.                                                                                                 |
-| `SEERR_API_KEY`     | Seerr API key.                                                                                                    |
-| `SABNZBD_API_KEY`   | SABnzbd API key.                                                                                                  |
-| `TRUENAS_HOST`      | TrueNAS base URL.                                                                                                 |
-| `TRUENAS_API_KEY`   | TrueNAS API key.                                                                                                  |
-| `PROXMOX_HOST`      | Proxmox base URL (e.g., `https://192.168.0.xxx:8006`).                                                            |
-| `PROXMOX_API_TOKEN` | Proxmox API token (e.g., `PVEAPIToken=...`).                                                                      |
+| Variable            | Description                                                                                                 |
+| ------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `API_KEY`           | Your secret API key (used for `X-API-Key` header).                                                          |
+| `PLEX_URL`          | Full URL to Plex identity endpoint.                                                                         |
+| `JELLYFIN_URL`      | Full URL to Jellyfin health endpoint.                                                                       |
+| `SONARR_URL`        | Full URL to Sonarr health endpoint.                                                                         |
+| `RADARR_URL`        | Full URL to Radarr health endpoint.                                                                         |
+| `PROWLARR_URL`      | Full URL to Prowlarr health endpoint.                                                                       |
+| `SEERR_URL`         | Full URL to Seerr health endpoint.                                                                          |
+| `SABNZBD_URL`       | Full URL to Base URL to SABnzbd (e.g., `http://<host>:<port>`). Do **not** include `/api` or query strings. |
+| `PLEX_TOKEN`        | Plex API token.                                                                                             |
+| `JELLYFIN_TOKEN`    | Jellyfin API token.                                                                                         |
+| `SONARR_API_KEY`    | Sonarr API key.                                                                                             |
+| `RADARR_API_KEY`    | Radarr API key.                                                                                             |
+| `PROWLARR_API_KEY`  | Prowlarr API key.                                                                                           |
+| `SEERR_API_KEY`     | Seerr API key.                                                                                              |
+| `SABNZBD_API_KEY`   | SABnzbd API key.                                                                                            |
+| `TRUENAS_HOST`      | TrueNAS base URL.                                                                                           |
+| `TRUENAS_API_KEY`   | TrueNAS API key.                                                                                            |
+| `PROXMOX_HOST`      | Proxmox base URL (e.g., `https://<host>:<port>`).                                                           |
+| `PROXMOX_API_TOKEN` | Proxmox API token (e.g., `PVEAPIToken=...`).                                                                |
 
-> **Important:** For `SABNZBD_URL`, provide only the base IP and port (e.g., `http://192.168.0.226:30055`). Do **not** include `/api`, `?mode=queue`, or `apikey` in this variable. The aggregator constructs the complete API request internally using your provided `SABNZBD_API_KEY`.
+[!Important:] For `SABNZBD_URL`, provide only the base IP and port (e.g., `http://<host>:<port>`). Do **not** include `/api`, `?mode=queue`, or `apikey` in this variable. The aggregator constructs the complete API request internally using your provided `SABNZBD_API_KEY`.
 
 ### Optional Environment Variables
 
@@ -104,13 +104,13 @@ LOG_LEVEL=info
 API_KEY=your-super-secret-key
 
 # Application URLs & Tokens
-PLEX_URL=http://192.168.0.xxx:32400/identity
-JELLYFIN_URL=https://jellyfin.ksbflix.co.uk/health
-SONARR_URL=http://192.168.0.xxx:8989/api/v3/health
-RADARR_URL=http://192.168.0.xxx:7878/api/v3/health
-PROWLARR_URL=http://192.168.0.xxx:9696/api/v1/health
-SEERR_URL=http://192.168.0.xxx:5055/api/v1/status
-SABNZBD_URL=http://192.168.0.xxx:30055
+PLEX_URL=http://<host>:32400/identity
+JELLYFIN_URL=https://<host>:<port>/health
+SONARR_URL=http://<host>:8989/api/v3/health
+RADARR_URL=http://<host>>:7878/api/v3/health
+PROWLARR_URL=http://<host>:9696/api/v1/health
+SEERR_URL=http://<host>:5055/api/v1/status
+SABNZBD_URL=http://<host>:30055
 
 PLEX_TOKEN=your-plex-token
 JELLYFIN_TOKEN=your-jellyfin-token
@@ -121,9 +121,9 @@ SEERR_API_KEY=your-seerr-key
 SABNZBD_API_KEY=your-sabnzbd-key
 
 # Infrastructure
-TRUENAS_HOST=http://192.168.0.xxx
+TRUENAS_HOST=http://<host>
 TRUENAS_API_KEY=your-truenas-key
-PROXMOX_HOST=https://192.168.0.xxx:8006
+PROXMOX_HOST=https://<host>
 PROXMOX_API_TOKEN=your-proxmox-token
 
 # Network
@@ -251,7 +251,7 @@ The `STATUS` column will show healthy when the application is running correctly.
 curl -H "X-API-Key: your-super-secret-key" http://localhost:3333/status
 ```
 
-Expected response:
+**Expected response:**
 
 ```json
 [
@@ -294,9 +294,8 @@ Common causes:
 If your aggregator container needs to access services running on the host machine (e.g., Plex on the host), use:
 
 - Windows / macOS: Use host.docker.internal as the hostname.
-- Linux: Use host network mode or the host's IP address (e.g., 192.168.0.226).
-
-Example:
+- Linux: Use host network mode or the host's IP address (e.g., xxx.xxx.xxx.xxx).
+  Example:
 
 ```env
 PLEX_URL=http://host.docker.internal:32400/identity

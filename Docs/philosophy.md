@@ -84,7 +84,7 @@ Proxmox → CPU: 0.23
 Docker → CPUPercent: 23
 TrueNAS → cpu_usage: 23.1
 
-becomes:
+**becomes:**
 
 ```json
 { "cpu": 23 }
@@ -121,7 +121,7 @@ When multiple findings exist, the **highest severity** determines the overall st
 | Warning + Info   | `DEGRADED`     | `warning`  |
 | Critical + Any   | `DOWN`         | `critical` |
 
-### Examples
+**Examples**
 
 | Observation          | Category       | Severity   | Effect                      |
 | -------------------- | -------------- | ---------- | --------------------------- |
@@ -192,7 +192,7 @@ Instead:
 - The API returns stale data with an indication of the error.
 - The /collectors endpoint shows the health of each collector.
 
-Example response from /collectors:
+**Example response from /collectors:**
 
 ```json
 {
@@ -250,7 +250,7 @@ It should never:
 - format UI output
 - store historical data
 
-### Collector Interface
+# Collector Interface
 
 Every collector implements the same pattern:
 
@@ -296,14 +296,14 @@ No subfolders, no separate client.ts or mapper.ts – keep it simple.
 
 Before a collector is accepted, it should meet a simple checklist:
 
-✅ Read-only
-✅ Uses least-privilege credentials
-✅ Has sensible timeouts
-✅ Handles API failures gracefully
-✅ Returns partial results when appropriate
-✅ Maps data to the common schema
-✅ Documents required API permissions
-✅ Documents any known limitations
+- ✅ Read-only
+- ✅ Uses least-privilege credentials
+- ✅ Has sensible timeouts
+- ✅ Handles API failures gracefully
+- ✅ Returns partial results when appropriate
+- ✅ Maps data to the common schema
+- ✅ Documents required API permissions
+- ✅ Documents any known limitations
 
 ---
 
@@ -334,7 +334,7 @@ All configuration is driven by environment variables (.env).
 
 No collector invents its own configuration style.
 
-Example:
+**Example:**
 
 ```
 PLEX_URL=http://192.168.xxx.xxx:32400/identity
@@ -370,17 +370,20 @@ The Health Interpreter is a dedicated layer that applies a consistent set of rul
   - `info` only → `UP`
   - Produces a **summary**, **impact** statement, and **recommended action** for operators.
 
-This layer ensures that the aggregator does not simply mirror raw statuses, but instead provides **actionable conclusions**. It also makes the system transparent – an operator can always trace a conclusion back to the underlying findings.
+This layer ensures that the aggregator does not simply mirror raw statuses, but instead provides **actionable conclusions**. It also makes the
+system transparent – an operator can always trace a conclusion back to the underlying findings.
 
-## Testing the Interpreter
+### Testing the Interpreter
 
-A dedicated test endpoint (`/test-health`) allows developers to simulate different health scenarios and verify the interpreter's behaviour without manipulating real services. This is essential for regression testing and onboarding new contributors.
+A dedicated test endpoint (`/test-health`) allows developers to simulate different health scenarios and verify the interpreter's behaviour without
+manipulating real services. This is essential for regression testing and onboarding new contributors.
 
 ## See [`test-health.md`](./test-health.md) for details.
 
 ## 18. User‑Friendly Messaging
 
-The aggregator strips internal source names (e.g., UpdateCheck, NotificationStatusCheck) from service labels, replacing them with clean, human‑readable text.
+The aggregator strips internal source names (e.g., UpdateCheck, NotificationStatusCheck) from service labels, replacing them with clean,
+human‑readable text.
 
 - Updates appear first – they are the most actionable.
 - Notifications appear second – they are informational.
@@ -391,8 +394,8 @@ Example label format:
 
 - UP — New update available: v4.0.19.3001 | All notifications unavailable
 
-This makes the aggregator suitable for both technical operators and novice users.
+## This makes the aggregator suitable for both technical operators and novice users.
 
 19. ## Redundancy
-
-The aggregator can be deployed in multiple locations (e.g., local TrueNAS and a VPS) to ensure monitoring continues even if one host fails. This has been tested using Tailscale for secure connectivity and Caddy for external access, along with a Domain.
+    The aggregator can be deployed in multiple locations (e.g., local TrueNAS and a VPS) to ensure monitoring continues even if one host fails. This
+    has been tested using Tailscale for secure connectivity and Caddy for external access, along with a Domain.

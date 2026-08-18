@@ -41,7 +41,7 @@ This document outlines the security principles that guide the design, developmen
 - `.env` is **excluded from version control** (added to `.gitignore`).
 - `.env.example` contains only placeholder values (no real secrets).
 
-**Why:** Prevents accidental credential leakage via source control, logs, or error messages.
+### Why: Prevents accidental credential leakage via source control, logs, or error messages.
 
 ---
 
@@ -55,7 +55,7 @@ This document outlines the security principles that guide the design, developmen
 - If the header is missing or invalid, the request is rejected with a `401` status code.
 - No route‑specific logic is executed before authentication.
 
-**Why:** Ensures that unauthenticated requests are rejected early, reducing surface area for attacks.
+### Why: Ensures that unauthenticated requests are rejected early, reducing surface area for attacks.
 
 ---
 
@@ -69,7 +69,7 @@ This document outlines the security principles that guide the design, developmen
 - In production, a **reverse proxy** (e.g., Nginx, Caddy, Traefik) is recommended to terminate TLS and forward requests.
 - `docker-compose.yml` and documentation encourage this configuration.
 
-**Why:** Protects credentials and data in transit between clients and the aggregator.
+### Why: Protects credentials and data in transit between clients and the aggregator.
 
 ---
 
@@ -83,7 +83,7 @@ This document outlines the security principles that guide the design, developmen
 - Collector errors are logged internally but are **not** exposed to clients via the API (except via `/collectors` endpoint, which is authenticated).
 - Internal error logs use structured logging and include context for debugging without leaking secrets.
 
-**Why:** Prevents information disclosure through error messages.
+### Why: Prevents information disclosure through error messages.
 
 ---
 
@@ -100,7 +100,7 @@ This document outlines the security principles that guide the design, developmen
   - Full network topology (unless explicitly requested and authenticated)
 - Fastify’s logging is disabled; custom logging is used and can be configured to omit sensitive data.
 
-**Why:** Protects against accidental leakage of internal infrastructure details to clients or logs.
+### Why: Protects against accidental leakage of internal infrastructure details to clients or logs.
 
 ---
 
@@ -114,7 +114,7 @@ This document outlines the security principles that guide the design, developmen
 - The scheduler passes the configuration object to collectors, but collectors only access their own credentials.
 - No collector can access another collector's credentials.
 
-**Why:** If one credential is compromised, the rest of the system remains secure.
+### Why: If one credential is compromised, the rest of the system remains secure.
 
 ---
 
@@ -131,7 +131,7 @@ This document outlines the security principles that guide the design, developmen
 - Logs are human‑readable and can be piped to external systems.
 - No secrets are logged.
 
-**Why:** Enables security monitoring, incident response, and forensic analysis.
+### Why: Enables security monitoring, incident response, and forensic analysis.
 
 ---
 
@@ -146,7 +146,7 @@ This document outlines the security principles that guide the design, developmen
 - The aggregator does not include a built‑in web UI – all access must be through the authenticated API.
 - No "backdoor" endpoints or administrative routes exist.
 
-**Why:** Security is a foundational requirement, not an afterthought.
+### Why: Security is a foundational requirement, not an afterthought.
 
 ---
 
@@ -163,4 +163,4 @@ This document outlines the security principles that guide the design, developmen
 
 These principles ensure that the Homelab Aggregator remains secure by default, resilient to attack, and safe to deploy in production environments – even when monitoring sensitive infrastructure.
 
-**When in doubt, refer to these principles. When they conflict, security takes priority.**
+### When in doubt, refer to these principles. When they conflict, security takes priority.

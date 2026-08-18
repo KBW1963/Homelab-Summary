@@ -7,7 +7,7 @@ This document defines the key terms used throughout the Homelab Summary project.
 ## Core Concepts
 
 | Term                   | Definition                                                                                                                                                                                                                                                                |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Aggregator**         | The overall project. A lightweight, read‑only service that collects, normalises, and caches infrastructure health data from multiple self‑hosted services.                                                                                                                |
 | **Collector**          | A standalone, read‑only function that retrieves data from a single external service (e.g., Plex, TrueNAS) and returns a normalised `CollectorResult<T>`. It is independent, has one responsibility, and never exposes an API endpoint. See **Rule 1** in `philosophy.md`. |
 | **Collector Manager**  | The component that orchestrates all collectors. It discovers registered collectors, executes them concurrently, handles timeouts and errors, and returns aggregated results to the scheduler.                                                                             |
@@ -18,7 +18,7 @@ This document defines the key terms used throughout the Homelab Summary project.
 | **Redaction**          | The process of automatically masking sensitive information (IP addresses, MAC addresses) from API responses to protect privacy. Controlled by the `REDACT_IPS` environment variable.                                                                                      |
 | **Notification**       | A finding that indicates an informational condition (e.g., "All notifications unavailable"). It does **not** affect the service's health status – the badge remains `UP`.                                                                                                 |
 | **Tailscale**          | A peer‑to‑peer VPN service. The aggregator can report Tailscale node status via the `/tailscale` endpoint, either through the REST API or the local CLI.                                                                                                                  |
-| **Finding**            | A single observation from a collector about a service. Contains a `category`, `severity`, `message`, and optional `source`. Findings are used by the Health Interpreter to determine overall health.                                                                      |     |
+| **Finding**            | A single observation from a collector about a service. Contains a `category`, `severity`, `message`, and optional `source`. Findings are used by the Health Interpreter to determine overall health.                                                                      |
 
 ---
 

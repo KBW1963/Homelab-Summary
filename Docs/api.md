@@ -225,7 +225,7 @@ Fields:
 | services          | Array of service summary objects.                        |
 | infrastructure    | Raw infrastructure data (TrueNAS, Proxmox, Network).     |
 
-> Note: Labels are prioritised: updates appear first, followed by informational notifications. Internal source names (e.g., `UpdateCheck:`, `Notifications:`) are stripped for readability.
+<!-- Note: Labels are prioritised: updates appear first, followed by informational notifications. Internal source names (e.g., `UpdateCheck:`, `Notifications:`) are stripped for readability.-->
 
 Status codes:
 
@@ -324,7 +324,7 @@ Status codes:
 - 200 – success
 - 200 with { error: "No data yet" } – if the collector has not run yet
 
-> Note: If REDACT_IPS is set to true in the aggregator's configuration, all IPv4, IPv6, and MAC addresses will be replaced with placeholders (xxx.xxx.xxx.xxx, xxxx:xxxx:..., xx:xx:xx:xx:xx:xx) in the response body.
+<!-- Note: If REDACT_IPS is set to true in the aggregator's configuration, all IPv4, IPv6, and MAC addresses will be replaced with placeholders (xxx.xxx.xxx.xxx, xxxx:xxxx:..., xx:xx:xx:xx:xx:xx) in the response body.-->
 
 ---
 
@@ -462,7 +462,7 @@ curl -H "X-API-Key: your-key" "http://localhost:3333/test-health?scenario=warnin
 
 For a full description of each scenario and the expected outputs, see `test-health.md`.
 
-Note: This endpoint is intended for dashboard consumption only. For full details, use `/`health-overview`or`/summary`.
+<!-- Note: This endpoint is intended for dashboard consumption only. For full details, use `/`health-overview`or`/summary`.-->
 
 ---
 
