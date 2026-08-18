@@ -18,6 +18,9 @@ Homelab Summary is a lightweight read-only aggregation service that collects hea
 - ✅ **Observable** – detailed startup banner, custom request logging, per‑collector timing
 - ✅ **Clean, human‑readable labels** – actionable updates appear first, followed by informational notices. No internal jargon (e.g., `UpdateCheck:`, `Notifications:`).
 
+
+### [Screenshot](https://github.com/KBW1963/Homelab-Summary/blob/main/Docs/Homepage%20Integration%20Example.png)
+
 ---
 
 ## Architecture
