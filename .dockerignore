@@ -1,6 +1,9 @@
 # Node modules
 node_modules/
 
+# Docker
+docker-compose.yml
+
 # Environment variables (secrets)
 .env
 
@@ -20,3 +23,4 @@ Thumbs.db
 # Test files
 test.js
 collector.ps1
+

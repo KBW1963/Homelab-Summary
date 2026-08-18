@@ -18,7 +18,6 @@ Homelab Summary is a lightweight read-only aggregation service that collects hea
 - ✅ **Observable** – detailed startup banner, custom request logging, per‑collector timing
 - ✅ **Clean, human‑readable labels** – actionable updates appear first, followed by informational notices. No internal jargon (e.g., `UpdateCheck:`, `Notifications:`).
 
-
 ### [Screenshot](https://github.com/KBW1963/Homelab-Summary/blob/main/Docs/Homepage%20Integration%20Example.png)
 
 ---
@@ -102,8 +101,8 @@ Required variables:
 | `PLEX_URL`             | Full URL to Plex identity endpoint                                                                                                               |
 | `JELLYFIN_URL`         | Full URL to Jellyfin health endpoint                                                                                                             |
 | `SONARR_URL`           | Full URL to Sonarr health endpoint                                                                                                               |
-| `SEERR_URL`            | Full URL to Overseerr/Seerr status endpoint (e.g., `http://192.168.0.212:5055/api/v1/status`)                                                    |
-| `SABNZBD_URL`          | Base URL to SABnzbd (e.g., http://192.168.0.226:30055). Do NOT append /api or query strings here. (See note below)                               |
+| `SEERR_URL`            | Full URL to Overseerr/Seerr status endpoint (e.g., `http://192.168.xxx.xxx:PORT/api/v1/status`)                                                  |
+| `SABNZBD_URL`          | Base URL to SABnzbd (e.g., http://192.168.xxx.xxx:PORT). Do NOT append /api or query strings here. (See note below)                              |
 | `PLEX_TOKEN`           | Plex API token                                                                                                                                   |
 | `JELLYFIN_TOKEN`       | Jellyfin API token                                                                                                                               |
 | `SONARR_API_KEY`       | Sonarr API key                                                                                                                                   |
@@ -112,18 +111,18 @@ Required variables:
 | `SEERR_API_KEY`        | SEERR API key                                                                                                                                    |
 | `TRUENAS_HOST`         | TrueNAS base URL                                                                                                                                 |
 | `TRUENAS_API_KEY`      | TrueNAS API key                                                                                                                                  |
-| `PROXMOX_HOST`         | Proxmox base URL (e.g., https://192.168.0.xxx:8006)                                                                                              |
+| `PROXMOX_HOST`         | Proxmox base URL (e.g., https://192.168.xxx.xxx:8006)                                                                                            |
 | `PROXMOX_API_TOKEN`    | Proxmox API token (e.g., PVEAPIToken=...)                                                                                                        |
 | `NETWORK_PING_TARGETS` | Ping targets: name/host (e.g., gateway 192.168.0.1,dns 1.1.1.1)                                                                                  |
 | `NETWORK_DNS_TARGETS`  | Domains to resolve (e.g., google.com,github.com)                                                                                                 |
-| `NETWORK_DNS_SERVER`   | (Optional) Custom DNS server(s) (e.g., 192.168.0.101,192.168.0.110)                                                                              |
+| `NETWORK_DNS_SERVER`   | (Optional) Custom DNS server(s) (e.g., 192.168.xxx.xxx,192.168.xxx.xxx)                                                                          |
 | `TAILSCALE_PATH`       | Path to the tailscale binary on the host. Default: tailscale. Only used if TAILSCALE_API_KEY and TAILSCALE_TAILNET are not set.                  |
 | `REDACT_IPS`           | Redact IPs and MACs from API responses (default: false)                                                                                          |
 | `TAILSCALE_API_KEY`    | Tailscale API key (optional). If set (along with TAILSCALE_TAILNET), the network collector uses the Tailscale REST API instead of the local CLI. |
 | `TAILSCALE_TAILNET`    | Your Tailscale tailnet name (e.g., example.tailnet). Required if TAILSCALE_API_KEY is set.                                                       |
 
 `⚠️ Important SABnzbd Note:
-For SABNZBD_URL, provide only the base IP and port (e.g., http://192.168.0.226:30055). Do not include /api, ?mode=queue, or apikey in this variable. The aggregator constructs the complete API request internally using your provided SABNZBD_API_KEY.`
+For SABNZBD_URL, provide only the base IP and port (e.g., http://192.168.xxx.xxx:PORT). Do not include /api, ?mode=queue, or apikey in this variable. The aggregator constructs the complete API request internally using your provided SABNZBD_API_KEY.`
 
 ---
 
@@ -160,7 +159,7 @@ All endpoints (except /health and /homepage) require the X-API-Key header.
 | GET    | /tailscale       | Tailscale node list with online/offline status |
 | GET    | /network/summary | Flattened network summary for Homepage         |
 
-Note: If REDACT_IPS is enabled, the /network endpoint will return redacted IPv4, IPv6, and MAC addresses.
+Note: If `REDACT_IPS` is enabled, the /network endpoint will return redacted IPv4, IPv6, and MAC addresses.
 
 Example request
 

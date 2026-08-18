@@ -13,13 +13,15 @@ graph TD
         CM["COLLECTOR MANAGER<br/>• Discovers all collectors<br/>• Executes them concurrently<br/>• Collects results and health"]
 
         subgraph COLLECTORS ["COLLECTORS"]
-            direction HORIZONTAL
             Plex["Plex"]
             Jellyfin["Jellyfin"]
             Sonarr["Sonarr"]
             Radarr["Radarr"]
+            Prowlarr["Prowlarr"]
+            Seerr["Seerr"]
+            SABnzbd["SABnzbd"]
             TrueNAS["TrueNAS"]
-            Netw["Netw."]
+            Netw["Network"]
         end
 
         INTERP["HEALTH INTERPRETER<br/>• Turns findings into health state<br/>• Applies severity rules<br/>• Produces summary/impact/action"]

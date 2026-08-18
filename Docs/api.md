@@ -6,7 +6,7 @@ This document describes the HTTP API exposed by the Homelab Summary aggregator.
 
 ## Base URL
 
-http://<host>:<port>
+`http://<host>:<port>`
 
 Default port: `3333`
 
@@ -52,7 +52,7 @@ Status codes:
 
 ### 2. Homepage Summary
 
-**`GET /homepage**
+**`GET /homepage`**
 
 A lightweight endpoint designed specifically for Homepage dashboards. Returns a concise summary of the entire homelab state.
 
@@ -156,9 +156,9 @@ Path parameters:
 
 `id` – the service identifier (e.g., plex, jellyfin, sonarr, radarr)
 
-Response: ServiceStatus
+**Response: ServiceStatus**
 
-Example:
+**Example:**
 
 ```json
 {
@@ -182,7 +182,7 @@ Status codes:
 
 Returns an aggregated overview of all services, including interpreted health fields.
 
-Response:
+**Response:**
 
 ```json
 {
@@ -225,7 +225,7 @@ Fields:
 | services          | Array of service summary objects.                        |
 | infrastructure    | Raw infrastructure data (TrueNAS, Proxmox, Network).     |
 
-Note: Labels are prioritised: updates appear first, followed by informational notifications. Internal source names (e.g., `UpdateCheck:`, `Notifications:`) are stripped for readability.
+> Note: Labels are prioritised: updates appear first, followed by informational notifications. Internal source names (e.g., `UpdateCheck:`, `Notifications:`) are stripped for readability.
 
 Status codes:
 
@@ -239,9 +239,9 @@ Status codes:
 
 Returns TrueNAS pool status.
 
-Response: { pools: TrueNASPool[] }
+**Response: { pools: TrueNASPool[] }**
 
-Example:
+**Example:**
 
 ```json
 {
@@ -271,9 +271,9 @@ Status codes:
 
 Returns Proxmox node status.
 
-Response: { nodes: ProxmoxNode[] }
+**Response: { nodes: ProxmoxNode[] }**
 
-Example:
+**Example:**
 
 ```json
 {
@@ -305,9 +305,9 @@ Status codes:
 
 Returns network metrics.
 
-Response: NetworkMetrics (defined in data-model.md)
+**Response: NetworkMetrics (defined in `data-model.md`)**
 
-Example:
+**Example:**
 
 ```json
 {
@@ -324,20 +324,21 @@ Status codes:
 - 200 – success
 - 200 with { error: "No data yet" } – if the collector has not run yet
 
-`Note:` If REDACT_IPS is set to true in the aggregator's configuration, all IPv4, IPv6, and MAC addresses will be replaced with placeholders (xxx.xxx.xxx.xxx, xxxx:xxxx:..., xx:xx:xx:xx:xx:xx) in the response body.
+> Note: If REDACT_IPS is set to true in the aggregator's configuration, all IPv4, IPv6, and MAC addresses will be replaced with placeholders (xxx.xxx.xxx.xxx, xxxx:xxxx:..., xx:xx:xx:xx:xx:xx) in the response body.
 
 ---
 
 ### 9. Network Summary
 
-**GET /network/summary**
+**`GET /network/summary`**
 
 Flattened network summary for dashboard widgets.
-Response:
+
+**Response:**
 
 ```json
 {
-  "externalIP": "86.4.190.85",
+  "externalIP": "xxx.xxx.xxx.xxx",
   "tailscaleStatus": "Connected (8/21 nodes)",
   "internetDisplay": "Online (17ms)",
   "dnsStatus": "Operational"
@@ -453,7 +454,7 @@ This endpoint is for **development and testing only**. It simulates different he
 }
 ```
 
-Example:
+**Example:**
 
 ```bash
 curl -H "X-API-Key: your-key" "http://localhost:3333/test-health?scenario=warning" | jq
@@ -461,7 +462,7 @@ curl -H "X-API-Key: your-key" "http://localhost:3333/test-health?scenario=warnin
 
 For a full description of each scenario and the expected outputs, see `test-health.md`.
 
-Note: This endpoint is intended for dashboard consumption only. For full details, use /health-overview or /summary.
+Note: This endpoint is intended for dashboard consumption only. For full details, use `/`health-overview`or`/summary`.
 
 ---
 
