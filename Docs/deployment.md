@@ -27,6 +27,16 @@ Hopefully, this gives you a complete, production‑ready deployment guide.
 
 ---
 
+### Deploying on a VPS
+
+1. Install Tailscale on the VPS.
+2. Install Caddy and configure reverse proxy rules.
+3. Deploy the aggregator using Docker Compose.
+4. Set environment variables to use Tailscale IPs or domains.
+5. Expose the `/homepage` endpoint publicly (no auth required).
+
+---
+
 ## Configuration
 
 All configuration is provided via environment variables. You can either:

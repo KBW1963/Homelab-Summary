@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.0] - 2026-08-17
+
+### Added
+
+- VPS deployment with Tailscale and Caddy reverse proxy
+- Seerr migrated to TrueNAS and integrated into both aggregators
+- Public `/homepage` endpoint for Homepage integration
+
+### Changed
+
+- SABnzbd collector uses `mode=version` and explicit `Host` header
+- Updated Homepage to use VPS URL (`https://<VPS_URL>/homepage`)
+
+### Fixed
+
+- Seerr self‑signed certificate issue resolved via Caddy proxy
+- SABnzbd hostname verification fixed with `Host` header
+
+---
+
 ## [0.1.1] - 2026-08-16
 
 ### Added

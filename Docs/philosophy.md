@@ -163,7 +163,7 @@ Instead, we expose what is useful for answering questions like:
 - Are backups succeeding?
 - Is media streaming working?
 
-## If someone needs every metric from Proxmox, they should query the Proxmox API directly.
+If someone needs every metric from Proxmox, they should query the Proxmox API directly.
 
 ---
 
@@ -249,8 +249,6 @@ It should never:
 - call another collector
 - format UI output
 - store historical data
-
----
 
 ### Collector Interface
 
@@ -339,7 +337,7 @@ No collector invents its own configuration style.
 Example:
 
 ```
-PLEX_URL=http://192.168.0.226:32400/identity
+PLEX_URL=http://192.168.xxx.xxx:32400/identity
 PLEX_TOKEN=your-token
 ```
 
@@ -391,6 +389,10 @@ This ensures that dashboards remain intuitive and free of technical jargon, whil
 
 Example label format:
 
-UP — New update available: v4.0.19.3001 | All notifications unavailable
+- UP — New update available: v4.0.19.3001 | All notifications unavailable
 
 This makes the aggregator suitable for both technical operators and novice users.
+
+19. ## Redundancy
+
+The aggregator can be deployed in multiple locations (e.g., local TrueNAS and a VPS) to ensure monitoring continues even if one host fails. This has been tested using Tailscale for secure connectivity and Caddy for external access, along with a Domain.

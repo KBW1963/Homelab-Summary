@@ -39,9 +39,17 @@ export async function getSabnzbdStatus(
     const baseUrl = config.SABNZBD_URL;
     const apiKey = config.SABNZBD_API_KEY;
 
-    // Only use the version endpoint – this confirms the service is running
-    const versionUrl = `${baseUrl}/api?mode=version&output=json&apikey=${apiKey}`;
-    const versionRes = await axios.get(versionUrl, { timeout: 5000 });
+    // Derive the Host header from the base URL
+    const host = new URL(baseUrl).host;
+
+    // Use mode=version to check if the service is running
+    const versionUrl = `${baseUrl}?mode=version&output=json&apikey=${apiKey}`;
+    const versionRes = await axios.get(versionUrl, {
+      timeout: 5000,
+      headers: {
+        Host: host,
+      },
+    });
 
     if (versionRes.data && versionRes.data.version) {
       const currentVersion = versionRes.data.version;
@@ -60,7 +68,7 @@ export async function getSabnzbdStatus(
         });
       }
     } else {
-      // If version endpoint fails, the service is not responding correctly
+      // If the response is unexpected, treat as a warning
       findings.push({
         category: "connectivity",
         severity: "critical",

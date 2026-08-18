@@ -179,7 +179,7 @@ Example services.yaml widget:
     description: Live Infrastructure & Service Health
     widget:
       type: customapi
-      url: http://192.168.0.226:3333/homepage
+      url: http://192.168.xxx.xxx:3333/homepage
       headers:
         X-API-Key: "your-super-secret-key"
       mappings:
@@ -331,6 +331,19 @@ docker-compose up --build
 # Or run detached
 docker-compose up -d
 ```
+
+---
+
+## VPS Deployment (Optional)
+
+For redundancy and external access, you can deploy a second instance of the aggregator on a VPS.
+
+1. Install Tailscale on the VPS and connect it to your tailnet.
+2. Set up Caddy as a reverse proxy.
+3. Deploy the aggregator using Dockge or Docker Compose.
+4. Point Homepage to the VPS URL: `https://<VPS_URL>/homepage`
+
+For full instructions, see [`docs/deployment.md`](./docs/deployment.md).
 
 ---
 
