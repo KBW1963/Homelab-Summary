@@ -6,6 +6,7 @@ This document defines the logging levels and their usage across the Homelab Summ
 
 ## Quick Reference
 
+```markdown
 | Level     | When to use                                                                                             | Example                                     |
 | --------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
 | **INFO**  | Normal operational messages. Startup banner, poll summaries, collector state changes, and API requests. | ✓ Services collector completed in 705ms     |
@@ -13,6 +14,7 @@ This document defines the logging levels and their usage across the Homelab Summ
 | **ERROR** | Failures. Collector failures, unhandled exceptions, authentication errors.                              | ✗ Failed to fetch Plex: connection refused  |
 | **DEBUG** | Detailed debugging information. Individual API calls to external services, payload inspection.          | Parsing TrueNAS response: 12 datasets found |
 | **TRACE** | Very detailed, low-level logging                                                                        | Request payload: { ... }                    |
+```
 
 ---
 
@@ -26,12 +28,14 @@ Each log line follows this structure:
 
 ### Color Coding (in terminal)
 
+```markdown
 | Color      | Meaning                |
 | ---------- | ---------------------- |
 | Green      | Success (✓)            |
 | Yellow     | Warning (⚠)            |
 | Red        | Error (✗)              |
 | White/Blue | Info (•, regular text) |
+```
 
 ---
 
@@ -39,6 +43,7 @@ Each log line follows this structure:
 
 The log level is **inclusive** – setting a level includes all higher-priority levels:
 
+```markdown
 | `LOG_LEVEL` | Shows                               |
 | ----------- | ----------------------------------- |
 | `trace`     | trace + debug + info + warn + error |
@@ -46,6 +51,7 @@ The log level is **inclusive** – setting a level includes all higher-priority 
 | `info`      | info + warn + error                 |
 | `warn`      | warn + error                        |
 | `error`     | error only                          |
+```
 
 ## **Example: `LOG_LEVEL=warn` will only show warnings and errors.**
 
@@ -107,6 +113,7 @@ Add to your `.env` file:
 
 ## Log Examples
 
+````markdown
 ╔════════════════════════════════════════════╗
 ║ Homelab Summary v0.1.0-dev ║
 ╠════════════════════════════════════════════╣
@@ -125,13 +132,16 @@ Add to your `.env` file:
 ║ Collectors: 4 ║
 ╚════════════════════════════════════════════╝
 
-Registered collectors:
+```markdown
+### Registered collectors:
+
 • All Services (7 services)
 • Network
 • Proxmox
 • TrueNAS
 
-Monitored services:
+### Monitored services:
+
 • Starmedia Plex
 • N100 Jellyfin
 • Sonarr
@@ -161,6 +171,8 @@ Collectors:
 
 Poll compelted in 10062ms
 ──────────────────────────────────────────
+```
+````
 
 ---
 
