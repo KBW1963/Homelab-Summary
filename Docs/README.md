@@ -20,7 +20,9 @@ Homelab Summary is a lightweight read-only aggregation service that collects hea
 
 ### [Screenshot](https://github.com/KBW1963/Homelab-Summary/blob/main/Docs/Homepage%20Integration%20Example.png)
 
----
+I built this as a mini-project to create a single-pane view of app's and services running on my self-hosted servers. I have tested it locally running via Dockge on TrueNAS as well as deploying it on a remote VPS running Dockge, Caddy and Domain records. Tailscale has also been used to test remote monitoring. [Hompage](https://gethomepage.dev) is my dashboard of choice (see screenshot above) but as stated it is a REST API and therefore can be integrated with other dashboards or even as a web page.
+
+## <!--NOTE: this is not intended to replace other more mature app's in the self-hosted community. As stated I wanted a single-pane that provided an overview of what was happening with my app's and services.-->
 
 ## Architecture
 
