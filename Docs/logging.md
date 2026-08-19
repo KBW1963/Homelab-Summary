@@ -194,14 +194,14 @@ If a collector consistently times out:
 
 Help users quickly diagnose problems:
 
-```markdown
 ## Troubleshooting with Logs
 
+```markdown
 | Issue                       | What to Look For                 | Likely Cause                             |
 | --------------------------- | -------------------------------- | ---------------------------------------- |
 | **Services not showing**    | ⚠ API_KEY not set                | Missing or invalid API key               |
 | **Slow polls**              | ⚠ Collector X took >5s           | Network latency or service overload      |
-| **No network data**         | ✗ Network check failed`          | Check your `NETWORK_PING_TARGETS`        |
+| **No network data**         | ✗ Network check failed           | Check your `NETWORK_PING_TARGETS`        |
 | **Proxmox timeout**         | ⚠ Proxmox timeout after 10000ms  | Proxmox not responding or too many nodes |
 | **Tailscale nodes offline** | ⚠ Tailscale API returned 0 nodes | Tailscale API key expired or invalid     |
 ```
