@@ -113,7 +113,7 @@ Add to your `.env` file:
 
 ## Log Examples
 
-````markdown
+```markdown
 ╔════════════════════════════════════════════╗
 ║ Homelab Summary v0.1.0-dev ║
 ╠════════════════════════════════════════════╣
@@ -131,8 +131,8 @@ Add to your `.env` file:
 ║ Polling: 30s ║
 ║ Collectors: 4 ║
 ╚════════════════════════════════════════════╝
+```
 
-```markdown
 ### Registered collectors:
 
 • All Services (7 services)
@@ -171,8 +171,6 @@ Collectors:
 
 Poll compelted in 10062ms
 ──────────────────────────────────────────
-```
-````
 
 ---
 
@@ -199,13 +197,13 @@ Help users quickly diagnose problems:
 ```markdown
 ## Troubleshooting with Logs
 
-| Issue                       | What to Look For                   | Likely Cause                             |
-| --------------------------- | ---------------------------------- | ---------------------------------------- |
-| **Services not showing**    | `⚠ API_KEY not set`                | Missing or invalid API key               |
-| **Slow polls**              | `⚠ Collector X took >5s`           | Network latency or service overload      |
-| **No network data**         | `✗ Network check failed`           | Check your `NETWORK_PING_TARGETS`        |
-| **Proxmox timeout**         | `⚠ Proxmox timeout after 10000ms`  | Proxmox not responding or too many nodes |
-| **Tailscale nodes offline** | `⚠ Tailscale API returned 0 nodes` | Tailscale API key expired or invalid     |
+| Issue                       | What to Look For                 | Likely Cause                             |
+| --------------------------- | -------------------------------- | ---------------------------------------- |
+| **Services not showing**    | ⚠ API_KEY not set                | Missing or invalid API key               |
+| **Slow polls**              | ⚠ Collector X took >5s           | Network latency or service overload      |
+| **No network data**         | ✗ Network check failed`          | Check your `NETWORK_PING_TARGETS`        |
+| **Proxmox timeout**         | ⚠ Proxmox timeout after 10000ms  | Proxmox not responding or too many nodes |
+| **Tailscale nodes offline** | ⚠ Tailscale API returned 0 nodes | Tailscale API key expired or invalid     |
 ```
 
 ---
@@ -221,18 +219,22 @@ Help users quickly diagnose problems:
 | ✓ X collectors registered | The specified number of collectors are active | ✅ Normal             |
 | ✓ API listening on :3333  | Server is ready to accept requests            | ✅ Normal             |
 | ⚠ TRUENAS_API_KEY not set | TrueNAS collector will be skipped             | Add API key if needed |
+```
 
 ### Runtime Events
 
+```markdown
 | Log Message               | Meaning                                       | Action                      |
 | ------------------------- | --------------------------------------------- | --------------------------- |
 | ✓ Services 705ms          | All application services checked successfully | ✅ Normal                   |
 | ⚠ Proxmox 10008ms         | Proxmox response slow (near timeout)          | Check Proxmox performance   |
 | ✗ Collector 'plex' failed | Service didn't respond                        | Check if service is running |
 | ⚠ Poll timed out          | Overall poll exceeded the timeout             | Consider increasing timeout |
+```
 
 ### Network Collector Details
 
+```markdown
 The network collector is broken down into sub-checks:
 
 | Check       | What It Does                                     | Expected Time      |
