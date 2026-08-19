@@ -135,21 +135,22 @@ Add to your `.env` file:
 
 ### Registered collectors:
 
-• All Services (7 services)
-• Network
-• Proxmox
-• TrueNAS
+- All Services
+- Network
+- Proxmox
+- TrueNAS
 
 ### Monitored services:
 
-• Starmedia Plex
-• N100 Jellyfin
-• Sonarr
-• Radarr
-• Prowlarr
-• Seerr
-• SABnzbd
+- Starmedia Plex
+- N100 Jellyfin
+- Sonarr
+- Radarr
+- Prowlarr
+- Seerr
+- SABnzbd
 
+```markdown
 ──────────────────────────────────────────
 Scheduler Poll #1
 ──────────────────────────────────────────
@@ -171,6 +172,7 @@ Collectors:
 
 Poll compelted in 10062ms
 ──────────────────────────────────────────
+```
 
 ---
 
@@ -178,10 +180,10 @@ Poll compelted in 10062ms
 
 Your logs help identify bottlenecks:
 
-⚠ Proxmox 10008ms ← Proxmox took 10 seconds – consider adjusting timeout
-✓ Services 705ms ← Fast, good
-✓ Truenas 382ms ← Fast, good
-✓ Network 3385ms ← Mostly due to pings (3024ms)
+- ⚠ Proxmox 10008ms ← Proxmox took 10 seconds – consider adjusting timeout
+- ✓ Services 705ms ← Fast, good
+- ✓ Truenas 382ms ← Fast, good
+- ✓ Network 3385ms ← Mostly due to pings (3024ms)
 
 If a collector consistently times out:
 
