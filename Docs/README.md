@@ -2,6 +2,14 @@
 
 Homelab Summary is a lightweight read-only aggregation service that collects health information from your homelab, normalises it into a consistent model, and exposes it through a simple REST API for dashboards such as Homepage.
 
+I built this as a mini-project to create a single-pane view of app's and services running on my self-hosted servers. I have tested it locally running via Dockge on TrueNAS as well as deploying it on a remote VPS running Dockge, Caddy and Domain records.
+
+Tailscale has also been used to test remote monitoring as well as to provide access to app's and services where needed.
+
+[Hompage](https://gethomepage.dev) is my dashboard of choice (see screenshot above) but as stated it is a REST API and therefore can be integrated with other dashboards or even as a web page.
+
+> [!NOTE:] this is not intended to replace other more mature app's in the self-hosted community. As stated I wanted a single-pane that provided an >overview of what was happening with my app's and services.
+
 ## Features
 
 - ✅ **Service health** – Plex, Jellyfin, Sonarr, Radarr, Prowlarr, Seerr, SABnzbd
@@ -19,10 +27,6 @@ Homelab Summary is a lightweight read-only aggregation service that collects hea
 - ✅ **Clean, human‑readable labels** – actionable updates appear first, followed by informational notices. No internal jargon (e.g., `UpdateCheck:`, `Notifications:`).
 
 ### [Screenshot](https://github.com/KBW1963/Homelab-Summary/blob/main/Docs/Homepage%20Integration%20Example.png)
-
-I built this as a mini-project to create a single-pane view of app's and services running on my self-hosted servers. I have tested it locally running via Dockge on TrueNAS as well as deploying it on a remote VPS running Dockge, Caddy and Domain records. Tailscale has also been used to test remote monitoring. [Hompage](https://gethomepage.dev) is my dashboard of choice (see screenshot above) but as stated it is a REST API and therefore can be integrated with other dashboards or even as a web page.
-
-## <!--NOTE: this is not intended to replace other more mature app's in the self-hosted community. As stated I wanted a single-pane that provided an overview of what was happening with my app's and services.-->
 
 ## Architecture
 
@@ -247,6 +251,9 @@ Tip: When building the URL inside your collector, use the native URL object (new
 
 Create src/collectors/my-service.ts:
 
+<details>
+<summary>Click here to expand and view hidden details</summary>
+
 ```typescript
 import axios from "axios";
 import { CollectorResult } from "./types";
@@ -304,6 +311,8 @@ export async function getMyServiceStatus(
 }
 ```
 
+</details>
+
 ## Step 2 – Add configuration
 
 Add your new environment variables to src/config.ts and .env.example.
@@ -353,7 +362,9 @@ For full instructions, see [`docs/deployment.md`](./docs/deployment.md).
 
 # Project Structure
 
+```plaintext
 homelab-summary/
+
 ├── .env # Your environment variables
 ├── .env.example # Template
 ├── package.json
@@ -407,6 +418,7 @@ homelab-summary/
 ├── tailscale.ts # GET /tailscale
 ├── proxmox.ts # GET /proxmox
 └── network.ts # GET /network
+```
 
 ---
 
