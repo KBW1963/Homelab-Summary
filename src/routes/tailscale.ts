@@ -12,13 +12,22 @@ export default async function tailscaleRoutes(fastify: FastifyInstance) {
       return { nodes: [] };
     }
 
-    // Filter to ONLY online nodes to keep the widget compact
+    // Redact IPs if REDACT_IPS=true
+    const shouldRedact = process.env.REDACT_IPS === "true";
+
     const onlineNodes = tailscale.nodes
       .filter((node: any) => node.online)
-      .map((node: any) => ({
-        name: node.name,
-        status: `Online (${node.ip})`,
-      }));
+      .map((node: any) => {
+        let ipDisplay = node.ip;
+        if (shouldRedact && ipDisplay) {
+          // Replace with a placeholder
+          ipDisplay = "xxx.xxx.xxx.xxx";
+        }
+        return {
+          name: node.name,
+          status: `Online (${ipDisplay})`,
+        };
+      });
 
     return { nodes: onlineNodes };
   });
