@@ -12,15 +12,14 @@ export default async function tailscaleRoutes(fastify: FastifyInstance) {
       return { nodes: [] };
     }
 
-    // Redact IPs if REDACT_IPS=true
-    const shouldRedact = process.env.REDACT_IPS === "true";
+    // ✅ Use the config, not process.env
+    const shouldRedact = fastify.config?.REDACT_IPS === true;
 
     const onlineNodes = tailscale.nodes
       .filter((node: any) => node.online)
       .map((node: any) => {
         let ipDisplay = node.ip;
         if (shouldRedact && ipDisplay) {
-          // Replace with a placeholder
           ipDisplay = "xxx.xxx.xxx.xxx";
         }
         return {
