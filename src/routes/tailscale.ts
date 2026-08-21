@@ -1,33 +1,70 @@
-// src/routes/tailscale.ts
-import { FastifyInstance } from "fastify";
-import { getState } from "../state";
+// src/collectors/tailscale.ts
+import { exec } from "child_process";
+import { promisify } from "util";
 
-export default async function tailscaleRoutes(fastify: FastifyInstance) {
-  fastify.get("/tailscale", async () => {
-    const data = getState().network;
-    if (!data) return { error: "No data yet" };
+const execAsync = promisify(exec);
 
-    const tailscale = data.tailscale;
-    if (!tailscale || !tailscale.nodes) {
-      return { nodes: [] };
+export interface TailscaleNode {
+  name: string;
+  ip: string;
+  online: boolean;
+  lastSeen: string | null;
+}
+
+export interface TailscaleData {
+  connected: boolean;
+  total: number;
+  online: number;
+  nodes: TailscaleNode[];
+}
+
+// ✅ Make sure this is exported with the correct name
+export async function getTailscaleMetrics(
+  config: any,
+): Promise<TailscaleData | { error: string }> {
+  try {
+    // Use the tailscale command to get status as JSON
+    const { stdout, stderr } = await execAsync("tailscale status --json", {
+      timeout: 5000,
+    });
+
+    if (stderr) {
+      console.warn(`Tailscale stderr: ${stderr}`);
     }
 
-    // ✅ Use the config, not process.env
-    const shouldRedact = fastify.config?.REDACT_IPS === true;
+    const data = JSON.parse(stdout);
 
-    const onlineNodes = tailscale.nodes
-      .filter((node: any) => node.online)
-      .map((node: any) => {
-        let ipDisplay = node.ip;
-        if (shouldRedact && ipDisplay) {
-          ipDisplay = "xxx.xxx.xxx.xxx";
-        }
-        return {
-          name: node.name,
-          status: `Online (${ipDisplay})`,
-        };
-      });
+    // Process the nodes into a simpler format
+    const peers = data.Peer || {};
+    const nodes = Object.values(peers).map((peer: any) => ({
+      name: peer.HostName || peer.DNSName || "unknown",
+      ip: peer.TailscaleIPs?.[0] || "N/A",
+      online: peer.Online || false,
+      lastSeen: peer.LastSeen || null,
+    }));
 
-    return { nodes: onlineNodes };
-  });
+    // Also include the current node
+    const self = data.Self || {};
+    const allNodes = [
+      {
+        name: self.HostName || "this-device",
+        ip: self.TailscaleIPs?.[0] || "N/A",
+        online: true,
+        lastSeen: null,
+      },
+      ...nodes,
+    ];
+
+    return {
+      connected: true,
+      total: allNodes.length,
+      online: allNodes.filter((node) => node.online).length,
+      nodes: allNodes,
+    };
+  } catch (error: any) {
+    console.error(`Failed to fetch Tailscale data: ${error.message}`);
+    return {
+      error: `Failed to fetch Tailscale data: ${error.message}`,
+    };
+  }
 }
