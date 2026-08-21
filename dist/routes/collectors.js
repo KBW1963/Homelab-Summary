@@ -4,16 +4,24 @@ exports.default = collectorsRoutes;
 const state_1 = require("../state");
 async function collectorsRoutes(fastify) {
     fastify.get("/collectors", async () => {
-        const stateData = state_1.state.getState();
-        // FIX: Changed "state.collectorHealth" to "stateData.collectorHealth"
+        const stateData = (0, state_1.getState)();
         const health = stateData.collectorHealth || {};
-        // FIX: Added ": [string, CollectorHealth]" to tell TypeScript what the values are
         const entries = Object.entries(health).map(([key, value]) => {
-            const isHealthy = String(value.status || "").toLowerCase() === "healthy";
-            const formattedStatus = isHealthy ? "✓ healthy" : value.status;
+            const status = String(value.status || "").toLowerCase();
+            // Map status to emoji indicator
+            let indicator = "⚪"; // default/unknown
+            if (status === "healthy" || status === "up") {
+                indicator = "🟢";
+            }
+            else if (status === "degraded") {
+                indicator = "🟡";
+            }
+            else if (status === "unhealthy" || status === "down") {
+                indicator = "🔴";
+            }
             return {
                 name: key.charAt(0).toUpperCase() + key.slice(1),
-                status: formattedStatus,
+                status: `${indicator} ${value.status}`, // e.g., "🟢 healthy"
             };
         });
         return { collectors: entries };

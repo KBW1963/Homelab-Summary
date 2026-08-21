@@ -11,15 +11,25 @@ const axios_1 = __importDefault(require("axios"));
 const normalizer_1 = require("../normalizer");
 exports.serviceId = "sabnzbd";
 exports.serviceName = "SABnzbd";
-// Fallback version if the API fails
-const FALLBACK_SABNZBD_VERSION = "4.4.0";
-// Fetch latest SABnzbd version from GitHub releases
+const FALLBACK_SABNZBD_VERSION = "5.1.0";
+// Helper: compares two semantic versions (e.g., "5.1.1" vs "5.1.0")
+// Returns: 1 if v1 > v2, -1 if v1 < v2, 0 if equal
+function compareVersions(v1, v2) {
+    const p1 = v1.split(".").map(Number);
+    const p2 = v2.split(".").map(Number);
+    for (let i = 0; i < Math.max(p1.length, p2.length); i++) {
+        const n1 = p1[i] || 0;
+        const n2 = p2[i] || 0;
+        if (n1 !== n2)
+            return n1 > n2 ? 1 : -1;
+    }
+    return 0;
+}
 async function getLatestSabnzbdVersion() {
     try {
         const response = await axios_1.default.get("https://api.github.com/repos/sabnzbd/sabnzbd/releases/latest", {
             timeout: 5000,
         });
-        // GitHub returns tag_name like "v4.4.0" – remove the 'v' prefix
         const version = response.data?.tag_name?.replace(/^v/, "");
         if (version)
             return version;
@@ -35,41 +45,37 @@ async function getSabnzbdStatus(config) {
     try {
         const baseUrl = config.SABNZBD_URL;
         const apiKey = config.SABNZBD_API_KEY;
-        // 1. Get queue status (check if service is running)
-        const queueUrl = `${baseUrl}/api?mode=qstatus&output=json&apikey=${apiKey}`;
-        const queueRes = await axios_1.default.get(queueUrl, { timeout: 10000 });
-        if (queueRes.data && queueRes.data.status === true) {
-            const sabStatus = queueRes.data.data?.status || "Unknown";
-            if (sabStatus !== "Running") {
-                findings.push({
-                    category: "health",
-                    severity: "warning",
-                    message: `SABnzbd is ${sabStatus}`,
-                });
-            }
-        }
-        else {
-            findings.push({
-                category: "health",
-                severity: "warning",
-                message: "Unexpected response from SABnzbd",
-            });
-        }
-        // 2. Get version info
-        const versionUrl = `${baseUrl}/api?mode=version&output=json&apikey=${apiKey}`;
-        const versionRes = await axios_1.default.get(versionUrl, { timeout: 5000 });
+        // Derive the Host header from the base URL
+        const host = new URL(baseUrl).host;
+        // Use mode=version to check if the service is running
+        const versionUrl = `${baseUrl}?mode=version&output=json&apikey=${apiKey}`;
+        const versionRes = await axios_1.default.get(versionUrl, {
+            timeout: 5000,
+            headers: {
+                Host: host,
+            },
+        });
         if (versionRes.data && versionRes.data.version) {
             const currentVersion = versionRes.data.version;
-            // Fetch latest version dynamically
             const latestVersion = await getLatestSabnzbdVersion();
-            // Check if a newer version is available
-            if (currentVersion !== latestVersion) {
+            // Only flag a finding if the running version is BEHIND the latest
+            const comparison = compareVersions(currentVersion, latestVersion);
+            if (comparison < 0) {
                 findings.push({
                     category: "update",
                     severity: "info",
                     message: `New update available: ${latestVersion} (current: ${currentVersion})`,
                 });
             }
+            // If comparison >= 0 (equal OR newer), we say nothing – treat as up-to-date
+        }
+        else {
+            // If the response is unexpected, treat as a warning
+            findings.push({
+                category: "connectivity",
+                severity: "critical",
+                message: "SABnzbd version endpoint returned unexpected response",
+            });
         }
         const status = (0, normalizer_1.deriveStatusFromFindings)(findings);
         const firstFinding = findings.length > 0 ? findings[0] : null;

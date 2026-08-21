@@ -7,15 +7,40 @@ exports.createArrCollector = createArrCollector;
 // src/collectors/arr-common.ts
 const axios_1 = __importDefault(require("axios"));
 const normalizer_1 = require("../normalizer");
+const sourceMap = {
+    NotificationStatusCheck: "Notifications",
+    UpdateCheck: "UpdateCheck",
+    IndexerStatusCheck: "Indexers",
+    DownloadClientStatusCheck: "Download Client",
+    ImportStatusCheck: "Import",
+    DiskSpaceCheck: "Disk Space",
+    SystemStatusCheck: "System",
+};
 async function createArrCollector(id, name, url, apiKey) {
     const start = Date.now();
     let data;
     const findings = [];
+    let currentVersion = null;
     try {
+        // 1. Get health status (issues)
         const response = await axios_1.default.get(url, {
             headers: { "X-Api-Key": apiKey },
             timeout: 10000,
         });
+        // 2. Get current version from system/status
+        try {
+            const versionUrl = url.replace(/\/health$/, "/system/status");
+            const versionRes = await axios_1.default.get(versionUrl, {
+                headers: { "X-Api-Key": apiKey },
+                timeout: 5000,
+            });
+            if (versionRes.data && versionRes.data.version) {
+                currentVersion = versionRes.data.version;
+            }
+        }
+        catch {
+            // Version endpoint not available – ignore
+        }
         if (Array.isArray(response.data) && response.data.length > 0) {
             for (const issue of response.data) {
                 let severity = "warning";
@@ -24,7 +49,7 @@ async function createArrCollector(id, name, url, apiKey) {
                 }
                 else if (issue.source === "NotificationStatusCheck" ||
                     issue.message?.toLowerCase().includes("notification")) {
-                    severity = "info"; // ← FIXED: now "info"
+                    severity = "info";
                 }
                 else if (issue.type === "error") {
                     severity = "critical";
@@ -32,19 +57,21 @@ async function createArrCollector(id, name, url, apiKey) {
                 else {
                     severity = "warning";
                 }
+                const rawSource = issue.source || "System";
+                const sourceLabel = sourceMap[rawSource] || rawSource;
                 let message;
                 if (issue.source === "UpdateCheck") {
-                    const version = issue.message.replace(/^New update is available:\s*/i, "");
-                    message = `New update available: ${version}`;
-                }
-                else if (issue.source === "NotificationStatusCheck") {
-                    message = issue.message
-                        .replace(/^Reports?:\s*/i, "")
-                        .replace(/^All notifications are unavailable due to failures/i, "All notifications unavailable");
+                    // Extract the version from the message (e.g., "New update is available: v4.0.19.3001")
+                    const versionMatch = issue.message.match(/(?:v?[\d.]+)/);
+                    const latestVersion = versionMatch ? versionMatch[0] : "unknown";
+                    const currentVersionStr = currentVersion
+                        ? ` (current: ${currentVersion})`
+                        : "";
+                    message = `New update available: ${latestVersion}${currentVersionStr}`;
                 }
                 else {
                     const cleanMessage = issue.message.replace(/^Reports?:\s*/i, "");
-                    message = cleanMessage;
+                    message = `${sourceLabel}: ${cleanMessage}`;
                 }
                 findings.push({
                     category: issue.source === "UpdateCheck" ? "update" : "health",
@@ -71,7 +98,7 @@ async function createArrCollector(id, name, url, apiKey) {
             lastUpdate: new Date().toISOString(),
             findings,
             issue: firstFinding ? firstFinding.message : null,
-            details: { issues: response.data },
+            details: { issues: response.data, version: currentVersion },
         };
     }
     catch (err) {
