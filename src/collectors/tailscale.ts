@@ -1,18 +1,27 @@
 // src/collectors/tailscale.ts
 import { exec } from "child_process";
 import { promisify } from "util";
-import { CollectorResult } from "./types";
 
 const execAsync = promisify(exec);
 
-export const serviceId = "tailscale";
-export const serviceName = "Tailscale";
+export interface TailscaleNode {
+  name: string;
+  ip: string;
+  online: boolean;
+  lastSeen: string | null;
+}
 
-export async function fetchTailscaleStatus(): Promise<CollectorResult<any>> {
-  const start = Date.now();
+export interface TailscaleData {
+  connected: boolean;
+  total: number;
+  online: number;
+  nodes: TailscaleNode[];
+}
 
+export async function getTailscaleMetrics(
+  config: any,
+): Promise<TailscaleData | { error: string }> {
   try {
-    // Use the tailscale command to get status as JSON
     const { stdout, stderr } = await execAsync("tailscale status --json", {
       timeout: 5000,
     });
@@ -23,15 +32,14 @@ export async function fetchTailscaleStatus(): Promise<CollectorResult<any>> {
 
     const data = JSON.parse(stdout);
 
-    // Process the nodes into a simpler format
-    const nodes = Object.values(data.Peer || {}).map((peer: any) => ({
+    const peers = data.Peer || {};
+    const nodes = Object.values(peers).map((peer: any) => ({
       name: peer.HostName || peer.DNSName || "unknown",
       ip: peer.TailscaleIPs?.[0] || "N/A",
       online: peer.Online || false,
       lastSeen: peer.LastSeen || null,
     }));
 
-    // Also include the current node
     const self = data.Self || {};
     const allNodes = [
       {
@@ -44,31 +52,15 @@ export async function fetchTailscaleStatus(): Promise<CollectorResult<any>> {
     ];
 
     return {
-      collector: serviceId,
-      data: {
-        connected: true,
-        total: allNodes.length,
-        online: allNodes.filter((n: any) => n.online).length,
-        nodes: allNodes,
-      },
-      collectedAt: new Date().toISOString(),
-      duration: Date.now() - start,
-      status: "success",
+      connected: true,
+      total: allNodes.length,
+      online: allNodes.filter((node) => node.online).length,
+      nodes: allNodes,
     };
   } catch (error: any) {
     console.error(`Failed to fetch Tailscale data: ${error.message}`);
     return {
-      collector: serviceId,
-      data: {
-        connected: false,
-        total: 0,
-        online: 0,
-        nodes: [],
-      },
-      collectedAt: new Date().toISOString(),
-      duration: Date.now() - start,
-      status: "error",
-      error: error.message,
+      error: `Failed to fetch Tailscale data: ${error.message}`,
     };
   }
 }
