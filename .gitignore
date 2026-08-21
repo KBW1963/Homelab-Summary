@@ -1,1 +1,25 @@
+# Node modules
+node_modules/
+
+# Docker
+docker-compose.yml
+
+# Environment variables (secrets)
 .env
+
+# Build output
+dist/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Test files
+test.js
+collector.ps1
