@@ -126,7 +126,7 @@ function logStartupBanner(config: AppConfig) {
   console.log(bannerLine("  ✓ API listening on http://0.0.0.0:" + config.PORT));
   console.log("╠════════════════════════════════════════════════════════════╣");
   console.log(bannerLine("Runtime"));
-  console.log(bannerLine("  Node:        " + nodeVersion));
+  console.log(bannerLine("  Node:        " + process.version));
   console.log(bannerLine("  Environment: " + environment));
   console.log(bannerLine("  API Version: v" + version));
   console.log(
