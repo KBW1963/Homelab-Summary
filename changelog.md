@@ -24,7 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Seerr self‑signed certificate issue resolved via Caddy proxy
 - SABnzbd hostname verification fixed with `Host` header
-- SABnzbd version comparison – only shows update notification when running version is behind the latest release; running newer nightly/beta versions no longer trigger a false "update available"
 
 ---
 

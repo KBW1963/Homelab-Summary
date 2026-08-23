@@ -5,7 +5,6 @@ import { getAllServices } from "./collectors/services";
 import { getTrueNASMetrics } from "./collectors/truenas";
 import { getProxmoxMetrics } from "./collectors/proxmox";
 import { getNetworkMetrics } from "./collectors/network";
-import { getTailscaleMetrics } from "./collectors/tailscale";
 
 let pollCounter = 0;
 const previousHealth: Record<
@@ -37,7 +36,6 @@ export async function runCollectors(config: any) {
     runWithTiming("truenas", getTrueNASMetrics),
     runWithTiming("proxmox", getProxmoxMetrics),
     runWithTiming("network", getNetworkMetrics),
-    runWithTiming("tailscale", getTailscaleMetrics),
   ]);
 
   const healthRecord: Record<string, CollectorHealth> = {};
@@ -115,7 +113,6 @@ export async function runCollectors(config: any) {
     results.find((r) => r.name === "truenas")?.result || null,
     results.find((r) => r.name === "proxmox")?.result || null,
     results.find((r) => r.name === "network")?.result || null,
-    results.find((r) => r.name === "tailscale")?.result || null,
     healthRecord,
   );
 
