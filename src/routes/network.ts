@@ -6,7 +6,6 @@ export default async function networkRoutes(fastify: FastifyInstance) {
   // ─── Existing full endpoint ───
   fastify.get("/network", async () => {
     const stateData = state.getState();
-    // FIX: Changed "data" to "stateData"
     if (!stateData) return { error: "No data yet" };
     return stateData.network;
   });
@@ -14,10 +13,14 @@ export default async function networkRoutes(fastify: FastifyInstance) {
   // ─── Summary endpoint for Homepage ───
   fastify.get("/network/summary", async () => {
     const stateData = state.getState();
-    // FIX: Changed "state.network" to "stateData.network"
     const network = stateData.network || {};
+    const shouldRedact = fastify.config?.REDACT_IPS === true;
 
-    const externalIP = network.externalIP || "N/A";
+    // ✅ Apply redaction to external IP
+    let externalIP = network.externalIP || "N/A";
+    if (shouldRedact && externalIP !== "N/A") {
+      externalIP = "xxx.xxx.xxx.xxx";
+    }
 
     const tailscale = network.tailscale || {};
     const tailscaleOnline = tailscale.online ?? 0;

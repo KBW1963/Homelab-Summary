@@ -8,13 +8,7 @@ const env_1 = __importDefault(require("@fastify/env"));
 async function configureEnv(fastify) {
     const schema = {
         type: "object",
-        required: [
-            "POLL_INTERVAL_MS",
-            "API_KEY",
-            "PLEX_URL",
-            "JELLYFIN_URL",
-            "SONARR_URL",
-        ],
+        required: ["POLL_INTERVAL_MS", "API_KEY"],
         properties: {
             // Aggregator
             POLL_INTERVAL_MS: { type: "number", default: 30000 },

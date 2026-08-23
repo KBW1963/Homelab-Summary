@@ -101,12 +101,24 @@ export async function runCollectors(config: any) {
   }
 
   // Call the new unified update method
+  const networkResult = results.find((r) => r.name === "network")?.result;
+  console.log("Scheduler network result:", networkResult ? "exists" : "null");
+  console.log(
+    "Scheduler network tailscale nodes:",
+    networkResult?.tailscale?.nodes?.length || 0,
+  );
+
   state.updateAll(
     results.find((r) => r.name === "services")?.result?.data || [],
     results.find((r) => r.name === "truenas")?.result || null,
     results.find((r) => r.name === "proxmox")?.result || null,
     results.find((r) => r.name === "network")?.result || null,
     healthRecord,
+  );
+
+  console.log(
+    "State after update - network:",
+    state.getState().network ? "exists" : "null",
   );
 
   const totalDuration = (performance.now() - startTotal).toFixed(0);

@@ -118,6 +118,9 @@ function logStartupBanner(config: AppConfig) {
   console.log(bannerLine("  ✓ Scheduler started"));
   console.log(bannerLine("  ✓ Current Homelab State initialised"));
   console.log(bannerLine("  ✓ API listening on http://0.0.0.0:" + config.PORT));
+  console.log(
+    bannerLine(" ✓ Redact IPs:  " + (config.REDACT_IPS ? "🔒  ON" : "🔓  OFF")),
+  );
   console.log("╠════════════════════════════════════════════════════════════╣");
   console.log(bannerLine("Runtime"));
   console.log(bannerLine("  Node:        " + nodeVersion));

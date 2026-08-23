@@ -43,6 +43,7 @@ const plex = __importStar(require("./plex"));
 const jellyfin = __importStar(require("./jellyfin"));
 const sonarr = __importStar(require("./sonarr"));
 const radarr = __importStar(require("./radarr"));
+const prowlarr = __importStar(require("./prowlarr"));
 const seerr = __importStar(require("./seerr"));
 const sabnzbd = __importStar(require("./sabnzbd"));
 // ─── Dynamic service registry ───
@@ -51,6 +52,7 @@ const serviceRegistry = [
     { id: jellyfin.serviceId, name: jellyfin.serviceName, fetch: jellyfin.fetch },
     { id: sonarr.serviceId, name: sonarr.serviceName, fetch: sonarr.fetch },
     { id: radarr.serviceId, name: radarr.serviceName, fetch: radarr.fetch },
+    { id: prowlarr.serviceId, name: prowlarr.serviceName, fetch: prowlarr.fetch },
     { id: seerr.serviceId, name: seerr.serviceName, fetch: seerr.fetch },
     { id: sabnzbd.serviceId, name: sabnzbd.serviceName, fetch: sabnzbd.fetch },
 ];

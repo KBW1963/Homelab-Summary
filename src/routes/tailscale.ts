@@ -4,23 +4,35 @@ import { getState } from "../state";
 
 export default async function tailscaleRoutes(fastify: FastifyInstance) {
   fastify.get("/tailscale", async () => {
-    const data = getState().network;
-    if (!data) return { error: "No data yet" };
+    const stateData = getState();
+    console.log(
+      "Route - full stateData.network:",
+      JSON.stringify(stateData.network, null, 2),
+    );
 
-    const tailscale = data.tailscale;
+    if (!stateData) return { error: "No data yet" };
+
+    const tailscale = stateData.network?.tailscale;
+    console.log(
+      "Route - tailscale from network:",
+      tailscale ? "exists" : "undefined",
+    );
+    if (tailscale) {
+      console.log("Route - tailscale nodes count:", tailscale.nodes?.length);
+    }
+
     if (!tailscale || !tailscale.nodes) {
       return { nodes: [] };
     }
 
-    // Redact IPs if REDACT_IPS=true
-    const shouldRedact = process.env.REDACT_IPS === "true";
+    const shouldRedact = fastify.config?.REDACT_IPS === true;
+    console.log(`[Route] shouldRedact: ${shouldRedact}`);
 
     const onlineNodes = tailscale.nodes
       .filter((node: any) => node.online)
       .map((node: any) => {
         let ipDisplay = node.ip;
         if (shouldRedact && ipDisplay) {
-          // Replace with a placeholder
           ipDisplay = "xxx.xxx.xxx.xxx";
         }
         return {
@@ -28,6 +40,11 @@ export default async function tailscaleRoutes(fastify: FastifyInstance) {
           status: `Online (${ipDisplay})`,
         };
       });
+
+    // Log the first returned node
+    if (onlineNodes.length) {
+      console.log(`[Route] first returned node IP: ${onlineNodes[0].status}`);
+    }
 
     return { nodes: onlineNodes };
   });
