@@ -280,8 +280,30 @@ export async function getNetworkMetrics(
       steps,
     };
 
+    //Test Redaction
+    console.log(
+      `REDACT_IPS config value: ${config.REDACT_IPS} (${typeof config.REDACT_IPS})`,
+    );
+
     // 7. Apply redaction if enabled
-    if (config.REDACT_IPS) {
+
+    // 7. Apply redaction if enabled
+    console.log(
+      `DEBUG: config.REDACT_IPS = ${config.REDACT_IPS} (${typeof config.REDACT_IPS})`,
+    );
+
+    if (config.REDACT_IPS === true) {
+      console.log("🔴 Redaction block is entered.");
+      // ... redaction code ...
+    } else {
+      console.log("🟢 Redaction block skipped.");
+    }
+
+    // Also log the first node IP before returning
+    if (tailscale.nodes.length > 0) {
+      console.log(`First node IP from collector: ${tailscale.nodes[0].ip}`);
+    }
+    if (config.REDACT_IPS === true) {
       result = {
         externalIP: externalIP ? redactIP(externalIP) : null,
         tailscale: {

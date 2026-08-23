@@ -1,4 +1,3 @@
-// src/routes/tailscale.ts
 import { FastifyInstance } from "fastify";
 import { getState } from "../state";
 
@@ -7,7 +6,7 @@ export default async function tailscaleRoutes(fastify: FastifyInstance) {
     const stateData = getState();
     if (!stateData) return { error: "No data yet" };
 
-    const tailscale = stateData.tailscale;
+    const tailscale = stateData.network?.tailscale;
     if (!tailscale || !tailscale.nodes) {
       return { nodes: [] };
     }

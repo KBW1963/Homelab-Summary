@@ -4,13 +4,7 @@ import { FastifyInstance } from "fastify";
 export async function configureEnv(fastify: FastifyInstance) {
   const schema = {
     type: "object",
-    required: [
-      "POLL_INTERVAL_MS",
-      "API_KEY",
-      "PLEX_URL",
-      "JELLYFIN_URL",
-      "SONARR_URL",
-    ],
+    required: ["POLL_INTERVAL_MS", "API_KEY"],
     properties: {
       // Aggregator
       POLL_INTERVAL_MS: { type: "number", default: 30000 },
@@ -19,7 +13,7 @@ export async function configureEnv(fastify: FastifyInstance) {
       API_KEY: { type: "string" },
 
       // Redaction flag
-      REDACT_IPS: { type: "boolean", default: false }, // <-- Moved inside properties
+      REDACT_IPS: { type: "boolean", default: false },
 
       // Application URLs
       PLEX_URL: { type: "string" },
@@ -53,6 +47,10 @@ export async function configureEnv(fastify: FastifyInstance) {
         default: "gateway|192.168.0.1,dns|1.1.1.1,internet|8.8.8.8",
       },
       TAILSCALE_PATH: { type: "string", default: "tailscale" },
+
+      // ✅ ADD THESE TWO LINES:
+      TAILSCALE_API_KEY: { type: "string" },
+      TAILSCALE_TAILNET: { type: "string" },
 
       // DNS Properties
       NETWORK_DNS_TARGETS: {

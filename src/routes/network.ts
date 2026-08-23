@@ -21,9 +21,9 @@ export default async function networkRoutes(fastify: FastifyInstance) {
   fastify.get("/network/summary", async () => {
     const stateData = state.getState();
     const network = stateData.network || {};
-
-    // ✅ Redact external IP if enabled
     const shouldRedact = fastify.config?.REDACT_IPS === true;
+
+    // ✅ Apply redaction to external IP
     let externalIP = network.externalIP || "N/A";
     if (shouldRedact && externalIP !== "N/A") {
       externalIP = "xxx.xxx.xxx.xxx";

@@ -68,7 +68,6 @@ export async function getSabnzbdStatus(
       const currentVersion = versionRes.data.version;
       const latestVersion = await getLatestSabnzbdVersion();
 
-      // Only flag a finding if the running version is BEHIND the latest
       const comparison = compareVersions(currentVersion, latestVersion);
       if (comparison < 0) {
         findings.push({
