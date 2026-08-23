@@ -1,12 +1,19 @@
 ﻿// src/routes/network.ts
 import { FastifyInstance } from "fastify";
 import { state } from "../state";
+import { redactObject, redactIP } from "../utils/redact";
 
 export default async function networkRoutes(fastify: FastifyInstance) {
   // ─── Existing full endpoint ───
   fastify.get("/network", async () => {
     const stateData = state.getState();
     if (!stateData) return { error: "No data yet" };
+
+    // ✅ Apply redaction if enabled
+    const shouldRedact = fastify.config?.REDACT_IPS === true;
+    if (shouldRedact) {
+      return redactObject(stateData.network, redactIP);
+    }
     return stateData.network;
   });
 

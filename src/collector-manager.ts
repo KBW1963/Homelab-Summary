@@ -4,6 +4,7 @@ import { getAllServices } from "./collectors/services"; // <-- This now handles 
 import { getTrueNASMetrics } from "./collectors/truenas";
 import { getProxmoxMetrics } from "./collectors/proxmox";
 import { getNetworkMetrics } from "./collectors/network";
+import { getTailscaleMetrics } from "./collectors/tailscale";
 
 const collectors: Collector[] = [
   {
@@ -14,6 +15,24 @@ const collectors: Collector[] = [
       return result;
     },
   },
+
+  {
+    id: "tailscale",
+    name: "Tailscale",
+    collect: async (config) => {
+      const raw = await getTailscaleMetrics(config);
+      const isError = raw && (raw as any).error;
+      return {
+        collector: "tailscale",
+        data: raw,
+        collectedAt: new Date().toISOString(),
+        duration: 0,
+        status: isError ? "error" : "success",
+        error: isError ? (raw as any).error : undefined,
+      };
+    },
+  },
+
   {
     id: "truenas",
     name: "TrueNAS",
@@ -30,6 +49,7 @@ const collectors: Collector[] = [
       };
     },
   },
+
   {
     id: "proxmox",
     name: "Proxmox",

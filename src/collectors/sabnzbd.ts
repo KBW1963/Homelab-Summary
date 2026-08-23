@@ -7,6 +7,12 @@ import {
 } from "../normalizer";
 import { CollectorResult } from "./types";
 
+export const serviceId = "sabnzbd";
+export const serviceName = "SABnzbd";
+export { getSabnzbdStatus as fetch };
+
+const FALLBACK_SABNZBD_VERSION = "5.1.0";
+
 // Helper: compares two semantic versions (e.g., "5.1.1" vs "5.1.0")
 // Returns: 1 if v1 > v2, -1 if v1 < v2, 0 if equal
 function compareVersions(v1: string, v2: string): number {
@@ -19,12 +25,6 @@ function compareVersions(v1: string, v2: string): number {
   }
   return 0;
 }
-
-export const serviceId = "sabnzbd";
-export const serviceName = "SABnzbd";
-export { getSabnzbdStatus as fetch };
-
-const FALLBACK_SABNZBD_VERSION = "5.1.0";
 
 async function getLatestSabnzbdVersion(): Promise<string> {
   try {
@@ -76,6 +76,7 @@ export async function getSabnzbdStatus(
           message: `New update available: ${latestVersion} (current: ${currentVersion})`,
         });
       }
+      // If comparison >= 0 (equal OR newer), we say nothing – treat as up-to-date
     } else {
       // If the response is unexpected, treat as a warning
       findings.push({

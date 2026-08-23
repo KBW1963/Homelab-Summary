@@ -15,6 +15,7 @@ export interface HomelabStateData {
   truenas: any | null;
   proxmox: any | null;
   network: any | null;
+  tailscale: any | null;
   collectorHealth: Record<string, CollectorHealth>;
 
   infrastructureStatus: "HEALTHY" | "DEGRADED" | "DOWN" | "UNKNOWN";
@@ -30,6 +31,7 @@ class HomelabState {
     truenas: null,
     proxmox: null,
     network: null,
+    tailscale: null,
     collectorHealth: {},
     infrastructureStatus: "UNKNOWN",
     servicesStatus: "UNKNOWN",
@@ -43,12 +45,14 @@ class HomelabState {
     truenas: any,
     proxmox: any,
     network: any,
+    tailscale: any,
     collectorHealth: Record<string, CollectorHealth>,
   ) {
     this.data.services = services;
     this.data.truenas = truenas;
     this.data.proxmox = proxmox;
     this.data.network = network;
+    this.data.tailscale = tailscale;
     this.data.collectorHealth = collectorHealth;
 
     const infraFindings: Finding[] = [];

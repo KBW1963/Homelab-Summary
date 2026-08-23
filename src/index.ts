@@ -104,9 +104,15 @@ function bannerLine(left: string, right: string = ""): string {
 }
 
 function logStartupBanner(config: AppConfig) {
-  const version = packageJson.version || "0.1.0-dev";
-  const nodeVersion = process.version;
+  const baseVersion = packageJson.version || "0.1.0";
   const environment = process.env.NODE_ENV || "development";
+  const version =
+    environment === "production" ? baseVersion : `${baseVersion}-dev`;
+
+  const redactStatus =
+    config.REDACT_IPS === true
+      ? "🔒 ON (redacting)"
+      : "🔓 OFF (showing real IPs)";
 
   console.log("");
   console.log("╔════════════════════════════════════════════════════════════╗");
@@ -123,13 +129,15 @@ function logStartupBanner(config: AppConfig) {
   );
   console.log("╠════════════════════════════════════════════════════════════╣");
   console.log(bannerLine("Runtime"));
-  console.log(bannerLine("  Node:        " + nodeVersion));
+  console.log(bannerLine("  Node:        " + process.version));
   console.log(bannerLine("  Environment: " + environment));
   console.log(bannerLine("  API Version: v" + version));
   console.log(
     bannerLine("  Polling:     " + config.POLL_INTERVAL_MS / 1000 + "s"),
   );
   console.log(bannerLine("  Collectors:  " + collectorCount));
+  console.log(bannerLine("  Redact IPs:  " + redactStatus));
+
   console.log("╚════════════════════════════════════════════════════════════╝");
   console.log("");
 
