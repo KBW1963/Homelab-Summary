@@ -101,12 +101,12 @@ export async function runCollectors(config: any) {
   }
 
   // Call the new unified update method
-  const networkResult = results.find((r) => r.name === "network")?.result;
-  console.log("Scheduler network result:", networkResult ? "exists" : "null");
-  console.log(
-    "Scheduler network tailscale nodes:",
-    networkResult?.tailscale?.nodes?.length || 0,
-  );
+  // const networkResult = results.find((r) => r.name === "network")?.result;
+  // console.log("Scheduler network result:", networkResult ? "exists" : "null");
+  // console.log(
+  //   "Scheduler network tailscale nodes:",
+  //   networkResult?.tailscale?.nodes?.length || 0,
+  // );
 
   state.updateAll(
     results.find((r) => r.name === "services")?.result?.data || [],
@@ -116,10 +116,10 @@ export async function runCollectors(config: any) {
     healthRecord,
   );
 
-  console.log(
-    "State after update - network:",
-    state.getState().network ? "exists" : "null",
-  );
+  // console.log(
+  //   "State after update - network:",
+  //   state.getState().network ? "exists" : "null",
+  // );
 
   const totalDuration = (performance.now() - startTotal).toFixed(0);
 
