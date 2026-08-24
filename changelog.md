@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0] - 2026-08-24
+
+### Added
+
+- Tailscale REST API support via `TAILSCALE_API_KEY` and `TAILSCALE_TAILNET` environment variables
+- Redaction status shown in startup banner (`REDACT_IPS`)
+- Explicit external IP redaction in `/network/summary` endpoint
+
+### Changed
+
+- Tailscale data is now collected via the Network collector using REST API (TrueNAS)
+- Removed separate Tailscale collector (CLI) – no more `tailscaled` errors
+- Homepage widgets point to TrueNAS instance for real IPs and VPS for redacted IPs
+
+### Fixed
+
+- `REDACT_IPS` boolean handling (strict `=== true` comparison)
+- Scheduler state update to properly store `network.tailscale` data
+- SABnzbd version comparison logic (semantic versioning)
+- Git merge conflicts and cleanup
+
 ## [0.2.0] - 2026-08-17
 
 ### Added

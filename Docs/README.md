@@ -28,6 +28,8 @@ Tailscale has also been used to test remote monitoring as well as to provide acc
 
 ### [Screenshot](https://github.com/KBW1963/Homelab-Summary/blob/main/Docs/Homepage%20Integration%20Example.png)
 
+---
+
 ## Architecture
 
 The aggregator follows a clean, decoupled design:
@@ -132,6 +134,48 @@ For SABNZBD_URL, provide only the base IP and port (e.g., http://192.168.xxx.xxx
 
 ---
 
+## Tailscale Configuration
+
+The app supports two modes for Tailscale data:
+
+1. REST API (recommended for TrueNAS) – set `TAILSCALE_API_KEY` and `TAILSCALE_TAILNET` in `.env`.
+
+- The network collector uses the Tailscale REST API.
+- No tailscaled required in the container.
+- Ideal for TrueNAS App deployments.
+
+2. CLI (VPS) – uses native tailscale status --json.
+
+- Requires tailscaled running on the host.
+- Works best on VPS with native Tailscale installed.
+
+**Example** `.env` for REST API mode:
+
+```bash
+TAILSCALE_API_KEY=tskey-api-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TAILSCALE_TAILNET=tailcbd1f.ts.net
+```
+
+---
+
+## Redaction
+
+The app supports IP and MAC address redaction via the REDACT_IPS environment variable.
+
+```markdown
+| Setting            | Effect                                                                  |
+| ------------------ | ----------------------------------------------------------------------- |
+| `REDACT_IPS=true`  | All IPs and MACs are replaced with xxx.xxx.xxx.xxx or xx:xx:xx:xx:xx:xx |
+| `REDACT_IPS=false` | Real IPs and MACs are shown (default)                                   |
+```
+
+Use Cases:
+
+- VPS (public-facing): set `REDACT_IPS=true` to protect internal IPs.
+- TrueNAS (internal dashboard): set `REDACT_IPS=false` to show real IPs.
+
+## The redaction is applied at the collector level, so it affects all endpoints (`/network`, `/tailscale`, `/summary`, etc.).
+
 ## Running the Aggregator
 
 ```bash
@@ -149,6 +193,7 @@ npm start
 
 All endpoints (except /health and /homepage) require the X-API-Key header.
 
+```markdown
 | Method | Endpoint         | Description                                    |
 | ------ | ---------------- | ---------------------------------------------- |
 | GET    | /health          | Aggregator health check (no auth)              |
@@ -164,8 +209,9 @@ All endpoints (except /health and /homepage) require the X-API-Key header.
 | GET    | /network         | External IP, Tailscale, pings, DNS, interfaces |
 | GET    | /tailscale       | Tailscale node list with online/offline status |
 | GET    | /network/summary | Flattened network summary for Homepage         |
+```
 
-Note: If `REDACT_IPS` is enabled, the /network endpoint will return redacted IPv4, IPv6, and MAC addresses.
+<!-- Note: If `REDACT_IPS` is enabled, the /network endpoint will return redacted IPv4, IPv6, and MAC addresses.-->
 
 Example request
 
@@ -217,7 +263,25 @@ Example /homepage response
 }
 ```
 
-`NOTE:` that the X-API-Key header is used for authentication, and that /homepage is exempt from authentication.
+<!-- NOTE:` that the X-API-Key header is used for authentication, and that /homepage is exempt from authentication.-->
+
+## 💡 Pro Tip: Use the TrueNAS IP (http://192.168.xxx.xxx:3333) in your Homepage widgets to see real IPs, or the VPS domain (https://mydomain_name.net) if you want redacted IPs for public display.
+
+## VPS vs TrueNAS Deployment
+
+The same image can be deployed on both environments with different configurations:
+
+```markdown
+| Instance | REDACT_IPS | Tailscale Mode | IPs Shown                  |
+| -------- | ---------- | -------------- | -------------------------- |
+| VPS      | true       | CLI (native)   | xxx.xxx.xxx.xxx (redacted) |
+| TrueNAS  | false      | REST API       | Real IPs                   |
+```
+
+**Key differences:**
+
+- VPS: uses native Tailscale CLI, redacts IPs for public exposure.
+- TrueNAS: uses Tailscale REST API (no tailscaled needed), shows real IPs for internal dashboards.
 
 ---
 
