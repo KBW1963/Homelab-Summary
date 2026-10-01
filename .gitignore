@@ -25,4 +25,4 @@ test.js
 collector.ps1
 
 # Other
-'rollback data.txt'rollback data.txt
+rollback data.txt
